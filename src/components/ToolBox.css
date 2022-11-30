@@ -1,0 +1,14 @@
+.tool-box {
+  position: absolute;
+  bottom: 16px;
+  right: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+
+.tool-box .more {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+}

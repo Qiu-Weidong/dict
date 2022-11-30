@@ -1,0 +1,117 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color: #0f0f0f;
+  background-color: #f6f6f6;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color) transparent;
+  --scrollbar-color: #49b1f5;
+  --hlscrollbar-bg: #dce4eb;
+}
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-color);
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.background-img {
+  opacity: 0.45;
+  z-index: -1;
+  position: absolute;
+  object-fit: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+body {
+  margin: 0 !important;
+}
+.container {
+  height: 100vh;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f6f6f6;
+    background-color: #2f2f2f;
+  }
+
+  a:hover {
+    color: #24c8db;
+  }
+
+  input,
+  button {
+    color: #ffffff;
+    background-color: #0f0f0f98;
+  }
+}
+
+
+/* 定義一些字體 */
+@font-face {
+  font-family: '方正行楷繁体';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/方正行楷繁体.TTF') format("truetype");
+}
+
+@font-face {
+  font-family: '方正行楷简体';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/方正行楷简体.TTF') format("truetype");
+}
+
+@font-face {
+  font-family: '方正硬笔行书简体';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/方正硬笔行书简体.TTF') format("truetype");
+}
+
+@font-face {
+  font-family: '汉仪行楷繁';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/汉仪行楷繁.ttf') format("truetype");
+}
+
+
+@font-face {
+  font-family: '华文行楷';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/华文行楷.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: '方正甲骨文';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/FZJiaGW.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: '小篆';
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/FZXZTFW.TTF');
+}
+
+@font-face {
+  font-family: '大篆';
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/fonts/STFJinWDZFU.TTF');
+}
+

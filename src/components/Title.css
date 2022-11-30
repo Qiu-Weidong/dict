@@ -1,0 +1,16 @@
+
+.subtitle {
+  color: var(--light-grey);
+  font-family: '方正行楷繁体', '方正行楷简体', '华文行楷', FZXKB, FZXKJW, FZYBXSJW, XingKai;
+  line-height: 5em;
+}
+
+#site-title {
+  margin: 0;
+  color: var(--white);
+  font-size: 1.85em;
+  font-family: '方正行楷繁体', '方正行楷简体', '华文行楷', FZXKB, FZXKJW, FZYBXSJW, XingKai;
+}
+
+
+
