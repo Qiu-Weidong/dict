@@ -7,7 +7,6 @@ function Home() {
 
   return (
     <Container className="container">
-      {/* <Link to={'/test'}>点击跳转</Link> */}
       <Title></Title>
       <Search></Search>
     </Container>

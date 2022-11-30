@@ -4,6 +4,8 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import HomeIcon from '@mui/icons-material/Home';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Fab } from "@mui/material";
 
 import './ToolBox.css';
@@ -22,7 +24,7 @@ function ToolBox() {
       >
         <AddIcon />
       </Fab>
-      <Fab color="primary" aria-label="add" size="small"
+      <Fab color="info" aria-label="add" size="small"
         style={{ 'display': toolShow.show }}
         onClick={() => setToolShow({ show: 'none', unshow: 'flex' })}
       >
@@ -38,12 +40,12 @@ function ToolBox() {
         <Fab color="primary" aria-label="mode" size="small"
           style={{ 'display': 'none' }}
         >
-          <DarkModeIcon />
+          <Brightness7Icon />
         </Fab>
         <Fab color="primary" aria-label="mode" size="small"
           style={{ 'display': 'flex' }}
         >
-          <WbSunnyIcon />
+          <Brightness4Icon />
         </Fab></div>
     </div>
   );
