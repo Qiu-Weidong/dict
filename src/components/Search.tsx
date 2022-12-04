@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
-
+// import { simpleToTradition, traditionToSimple } from 'chinese-simple2traditional';
 import sqlite from "../sqlite";
 
 function Search() {

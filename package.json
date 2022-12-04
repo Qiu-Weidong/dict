@@ -33,6 +33,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.0.0",
+    "chinese-simple2traditional": "^1.0.1",
     "typescript": "^4.6.4",
     "vite": "^3.0.2"
   }
