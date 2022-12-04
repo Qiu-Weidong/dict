@@ -4,8 +4,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 
 import sqlite from "../sqlite";
-import { serialize } from "v8";
-import { stringify } from "querystring";
 
 function Search() {
   const [input, setInput] = useState("");
