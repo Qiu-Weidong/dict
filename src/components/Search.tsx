@@ -1,40 +1,58 @@
 import { useState } from "react";
-import { IconButton, TextField, Tooltip, Typography } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import { AutoComplete } from "antd";
 
-import SQLite from 'tauri-plugin-sqlite-api';
+import sqlite from "../sqlite";
 
 function Search() {
   const [input, setInput] = useState("");
-  async function search() {
-    console.log('输入内容', input);
-    SQLite.open('./古代汉语词典.db').then(db => {
-      db.select('select json from Dictionary where id = 734').then(data => {
-        console.log(data);
-      })
-    });
-  }
-  // const longText = "Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus. Praesent non nunc mollis, fermentum neque at, semper arcu. Nullam eget est sed sem iaculis gravida eget vitae justo.";
+  const [options, setOptions] = useState<{ value: string }[]>([]);
+  const [lock, setLock] = useState(false);
+  // let lock = false; // 试一试不使用 state
 
-  return (<div>
-    <TextField id="standard-basic" 
-      label="請輸入要查詢的漢字" variant="standard"
-      onChange={(e) => setInput(e.currentTarget.value)}
-      InputProps={{
-        endAdornment: (
-          <IconButton
-            onClick={() => { search() }}
-            type="button" aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        )
+  function search() {
+    console.log('输入内容', input);
+  }
+
+  function getCompleteList(value: string) {
+    if (!value) setOptions([]);
+    else
+      sqlite.select<{ character: string }[]>("select character from Dictionary where character like '%" + value + "%';").then(data => {
+        const result = data.map(item => { return { value: item.character } });
+        setOptions(result);
+      });
+  }
+
+
+  return (
+    <AutoComplete
+      options={options}
+      onChange={(value) => {
+        if (lock) return;
+        getCompleteList(value);
       }}
     >
-    </TextField>
-  </div>
+      <TextField id="standard-basic"
+        label="請輸入要查詢的漢字" variant="standard"
+        onChange={(e) => setInput(e.currentTarget.value)}
+        onCompositionStart={() => { setLock(true) }}
+        onCompositionEnd={() => { setLock(false); getCompleteList(input); }}
 
-    // </div>
+        InputProps={{
+          endAdornment: (
+            <IconButton
+              onClick={() => { search() }}
+              type="button" aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          )
+        }}
+      >
+      </TextField></AutoComplete>
+
   );
 }
 
 export default Search;
+
