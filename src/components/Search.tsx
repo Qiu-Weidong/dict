@@ -2,14 +2,17 @@ import { useState } from "react";
 import { IconButton, TextField, Tooltip, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 
-import Database from 'tauri-plugin-sql-api';
+import SQLite from 'tauri-plugin-sqlite-api';
 
 function Search() {
   const [input, setInput] = useState("");
   async function search() {
     console.log('输入内容', input);
-    const db = await Database.load('sqlite:dict.db')
-    await db.execute('create table Fuck(id INTEGER PRIMARY KEY, name TEXT);');
+    SQLite.open('./古代汉语词典.db').then(db => {
+      db.select('select json from Dictionary where id = 734').then(data => {
+        console.log(data);
+      })
+    });
   }
   // const longText = "Aliquam eget finibus ante, non facilisis lectus. Sed vitae dignissim est, vel aliquam tellus. Praesent non nunc mollis, fermentum neque at, semper arcu. Nullam eget est sed sem iaculis gravida eget vitae justo.";
 

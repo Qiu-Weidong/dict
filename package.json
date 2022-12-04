@@ -23,6 +23,7 @@
     "react-router-dom": "^6.4.3",
     "styled-components": "^5.3.6",
     "tauri-plugin-sql-api": "github:tauri-apps/tauri-plugin-sql#2191700775a436cdf0d734612a3af69a490cf268",
+    "tauri-plugin-sqlite-api": "github:lzdyes/tauri-plugin-sqlite#v0.1.1",
     "typewriter-effect": "^2.19.0"
   },
   "devDependencies": {
