@@ -9,9 +9,12 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+use tauri_plugin_sql::TauriSql;
+
 fn main() {
-    tauri::Builder::default()
+    tauri::Builder::default().plugin(TauriSql::default())
         .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+    // tauri::api::path::BaseDirectory::App
 }
