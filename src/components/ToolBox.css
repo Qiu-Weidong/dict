@@ -7,23 +7,9 @@
   gap: 8px;
 }
 
-.tool-box .more {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 6px;
 
-  /* height: 0;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  -webkit-transition: -webkit-transform 0.4s;
-  -moz-transition: -moz-transform 0.4s;
-  -o-transition: -o-transform 0.4s;
-  -ms-transition: -ms-transform 0.4s;
-  transition: transform 0.4s;
-  -webkit-transform: translate(45px, 0);
-  -moz-transform: translate(45px, 0);
-  -o-transform: translate(45px, 0);
-  -ms-transform: translate(45px, 0);
-  transform: translate(45px, 0); */
+.tool-box .tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

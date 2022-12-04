@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
-// import { simpleToTradition, traditionToSimple } from 'chinese-simple2traditional';
+import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
 
 function Search() {
@@ -16,11 +16,15 @@ function Search() {
 
   function getCompleteList(value: string) {
     if (!value) setOptions([]);
-    else
-      sqlite.select<{ character: string }[]>("select character from Dictionary where character like '%" + value + "%';").then(data => {
+    else {
+      const simple = Simplized(value), tradition = Traditionalized(value);
+      sqlite.select<{ character: string }[]>("select character from Dictionary \
+        where character like '%" + simple + "%' or character like '%" + tradition + "%' ;").then(data => {
         const result = data.map(item => { return { value: item.character } });
         setOptions(result);
       });
+    }
+
   }
 
 

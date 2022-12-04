@@ -1,15 +1,16 @@
 
 .subtitle {
-  color: var(--light-grey);
+  /* color: var(--light-grey); */
   font-family: '方正行楷繁体', '方正行楷简体', '华文行楷', FZXKB, FZXKJW, FZYBXSJW, XingKai;
   line-height: 5em;
-  
+  font-size: medium;
 }
 
 #site-title {
   margin: 0;
-  color: var(--white);
-  font-size: 1.85em;
+  /* color: var(--white); */
+  /* font-size: 1.85em; */
+  font-size: xx-large;
   font-family: '方正行楷繁体', '方正行楷简体', '华文行楷', FZXKB, FZXKJW, FZYBXSJW, XingKai;
   padding-top: 4%;
   padding-bottom: 4%;

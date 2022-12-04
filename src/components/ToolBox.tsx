@@ -1,52 +1,43 @@
-import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import HomeIcon from '@mui/icons-material/Home';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Fab } from "@mui/material";
+import { Fab, Grow } from "@mui/material";
+// import Fade from '@mui/material/Fade';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 
 import './ToolBox.css';
 import { useState } from "react";
 
 function ToolBox() {
-  const [toolShow, setToolShow] = useState({
-    show: 'none', unshow: 'flex'
-  });
+  const content = (
+    <div className='tools'>
+      <Fab color="info" aria-label="home" size="small">
+        <HomeIcon />
+      </Fab>
+      <Fab color="info" aria-label="setting" size="small">
+        <SettingsIcon />
+      </Fab>
+      <Fab color="info" aria-label="zoomin" size="small">
+        <ZoomInIcon />
+      </Fab>
+      <Fab color="info" aria-label="zoomin" size="small">
+        <ZoomOutIcon />
+      </Fab>
+    </div>
+  );
+  const [show, setShow] = useState(false);
 
   return (
     <div className="tool-box">
-      <Fab color="primary" aria-label="add" size="small"
-        style={{ 'display': toolShow.unshow }}
-        onClick={() => setToolShow({ show: 'flex', unshow: 'none' })}
-      >
-        <AddIcon />
-      </Fab>
       <Fab color="info" aria-label="add" size="small"
-        style={{ 'display': toolShow.show }}
-        onClick={() => setToolShow({ show: 'none', unshow: 'flex' })}
+        onClick={() => { show ? setShow(false) : setShow(true) }}
       >
-        <RemoveOutlinedIcon />
+        {!show ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </Fab>
-      <div className="more" style={{ 'display': toolShow.show }}>
-        <Fab color="primary" aria-label="setting" size="small">
-          <HomeIcon />
-        </Fab>
-        <Fab color="primary" aria-label="setting" size="small">
-          <SettingsIcon />
-        </Fab>
-        <Fab color="primary" aria-label="mode" size="small"
-          style={{ 'display': 'none' }}
-        >
-          <Brightness7Icon />
-        </Fab>
-        <Fab color="primary" aria-label="mode" size="small"
-          style={{ 'display': 'flex' }}
-        >
-          <Brightness4Icon />
-        </Fab></div>
+      <Grow in={show}>{content}</Grow>
+      {/* <Fade in={show}>{content}</Fade> */}
     </div>
   );
 }
