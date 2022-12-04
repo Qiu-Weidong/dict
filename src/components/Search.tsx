@@ -4,15 +4,16 @@ import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 
 import sqlite from "../sqlite";
+import { serialize } from "v8";
+import { stringify } from "querystring";
 
 function Search() {
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const [lock, setLock] = useState(false);
-  // let lock = false; // 试一试不使用 state
 
-  function search() {
-    console.log('输入内容', input);
+  function search(value: string) {
+    console.log('输入内容', value);
   }
 
   function getCompleteList(value: string) {
@@ -32,6 +33,7 @@ function Search() {
         if (lock) return;
         getCompleteList(value);
       }}
+      onSelect={(param: string) => { search(param) }}
     >
       <TextField id="standard-basic"
         label="請輸入要查詢的漢字" variant="standard"
@@ -42,14 +44,15 @@ function Search() {
         InputProps={{
           endAdornment: (
             <IconButton
-              onClick={() => { search() }}
+              onClick={() => { search(input) }}
               type="button" aria-label="search">
               <SearchIcon />
             </IconButton>
           )
         }}
       >
-      </TextField></AutoComplete>
+      </TextField>
+    </AutoComplete>
 
   );
 }
