@@ -1,0 +1,9 @@
+.background-img {
+  opacity: 0.225;
+  z-index: -1;
+  position: absolute;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}

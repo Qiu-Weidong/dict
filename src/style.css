@@ -28,15 +28,15 @@
   height: 8px;
 }
 
-.background-img {
+/* .background-img {
   opacity: 0.325;
   z-index: -1;
   position: absolute;
   object-fit: cover;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
-}
+} */
 
 body {
   margin: 0 !important;

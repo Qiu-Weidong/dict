@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
@@ -9,9 +10,16 @@ function Search() {
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const [lock, setLock] = useState(false);
+  const navgate = useNavigate();
 
   function search(value: string) {
     console.log('输入内容', value);
+    // todo 增加跳轉
+    navgate('/detail', {
+      state: { query: value }
+    });
+
+    // 可以使用 navagate(-1)來回退
   }
 
   function getCompleteList(value: string) {
