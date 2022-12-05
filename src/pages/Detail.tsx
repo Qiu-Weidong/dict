@@ -1,22 +1,28 @@
 import { useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
-// import BackgroundImage from '../components/Background';
 import { Fragment } from 'react';
+import sqlite from '../sqlite';
+import { Mdict, MdictUI } from '../components/Mdict';
 
 
 function Detail() {
   const location = useLocation();
-  console.log(location.state);
+  
+  let query: string = location.state.query;
+  query = query.trim();
+  const mdicts: Mdict[] = [];
 
-  // const drawer_bg_url = 'https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/%E5%93%88%E5%B0%94%E6%96%BD%E5%A1%94%E7%89%B9.jpg';
-  const main_bg_url = 'https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/wallhaven-g7g8rd.jpg';
-
+  sqlite.select<{json: string}[]>("select json from Dictionary where character = '"+ query +"';").then(datas => {
+    for(const data of datas) {
+      const obj: Mdict = JSON.parse(data.json);
+      mdicts.push(obj);
+    }
+  });
   return (
     <Fragment >
       <Layout>
-        layout
+        <MdictUI data={mdicts[0]} />
       </Layout>
-      {/* <BackgroundImage url={main_bg_url} /> */}
     </Fragment>
   );
 }
