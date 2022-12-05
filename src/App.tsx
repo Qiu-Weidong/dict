@@ -15,16 +15,18 @@ function App() {
   });
 
   return (
-    <ThemeProvider theme={dark}>
+    // <ThemeProvider theme={dark}>
+    <div>
       <Router>
         <Routes>
           <Route path="/" element={< Home />} />
           <Route path="/detail" element={< Detail />} />
         </Routes>
-        <ToolBox />
+{/* <ToolBox /> */}
       </Router>
       
-    </ThemeProvider>
+    </div>
+
   );
 }
 
