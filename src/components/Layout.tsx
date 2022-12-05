@@ -52,7 +52,7 @@ const Layout: React.FunctionComponent<{ children: React.ReactNode }> = (props) =
 
       <Main open={drawerShow} >
         
-        <IconButton style={{ 'position': 'absolute', 'left': '4px', 'top': '16px' }} size="small"
+        <IconButton style={{ 'position': 'absolute', 'left': '4px', 'top': '16px',  }} size="small"
           onClick={() => drawerShow ? setDrawerShow(false) : setDrawerShow(true)}
         > {
           !drawerShow ? <SubjectIcon /> : <KeyboardArrowLeftIcon />

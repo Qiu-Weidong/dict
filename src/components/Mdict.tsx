@@ -1,16 +1,3 @@
-
-
-export const MdictUI : React.FunctionComponent<{data: Mdict}> = (props) => {
-  return (<div>
-     {
-      props.data.prefix?.forEach(text => <text>{text}</text>) || ''
-    } 
-  </div>);
-}
-
-export default MdictUI;
-
-
 export interface Mdict {
   blocks?: Block[],
   prefix?: string[],
@@ -41,3 +28,19 @@ interface SubContent {
   explain?: string,
   examples?: string[]
 }
+
+// 用于显示一个 mdict
+export const MdictComponent: React.FunctionComponent<{data: Mdict}> = (props) => {
+  return (
+    <div>
+      {/* 首先是块的显示 */}
+      {/* 词头的显示 */}
+      <div>  { props.data.prefix }  </div>
+      {/* 关联词的显示 */}
+      <div>{ props.data.related }</div>
+      {/* 链接的显示 */}
+      <div>{ props.data.link }</div>
+    </div>
+  );
+}
+
