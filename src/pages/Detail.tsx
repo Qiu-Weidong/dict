@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Search from '../components/Search';
 import { Button } from '@mui/material';
+import logo from '../assets/icon.svg';
 
 
 function Detail() {
@@ -25,7 +26,8 @@ function Detail() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            {/* <MenuIcon /> */}
+            <img src={logo} width={32} />
           </IconButton>
           <Search />
           <Box sx={{ flexGrow: 1 }}/>
