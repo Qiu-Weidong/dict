@@ -19,7 +19,7 @@ function ToolBox() {
       <IconButton color="info" aria-label="home" size="small" onClick={() => navgate("/")}>
         <HomeIcon />
       </IconButton>
-      <IconButton color="info" aria-label="setting" size="small">
+      <IconButton color="info" aria-label="setting" size="small" onClick={() => navgate("/appbar")}>
         <SettingsIcon />
       </IconButton>
       <IconButton color="info" aria-label="zoomin" size="small">

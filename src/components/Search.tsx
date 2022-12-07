@@ -1,26 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
 
-function Search() {
+const Search: React.FunctionComponent<{search: (param: string) => void }> = (props) => {
   const [input, setInput] = useState("");
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const [lock, setLock] = useState(false);
-  const navgate = useNavigate();
-
-  function search(value: string) {
-    console.log('输入内容', value);
-    // todo 增加跳轉
-    navgate('/detail', {
-      state: { query: value }
-    });
-
-    // 可以使用 navagate(-1)來回退
-  }
 
   function getCompleteList(value: string) {
     if (!value) setOptions([]);
@@ -43,7 +31,7 @@ function Search() {
         if (lock) return;
         getCompleteList(value);
       }}
-      onSelect={(param: string) => { search(param) }}
+      onSelect={(param: string) => { props.search(param) }}
     >
       <TextField id="standard-basic"
         label="請輸入要查詢的漢字" variant="standard"
@@ -54,7 +42,7 @@ function Search() {
         InputProps={{
           endAdornment: (
             <IconButton
-              onClick={() => { search(input) }}
+              onClick={() => { props.search(input) }}
               type="button" aria-label="search">
               <SearchIcon />
             </IconButton>

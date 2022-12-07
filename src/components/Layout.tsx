@@ -2,13 +2,13 @@ import SubjectIcon from '@mui/icons-material/Subject';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Drawer, IconButton, styled } from '@mui/material';
 import { useState } from 'react';
-import BackgroundImage from './Background';
+// import BackgroundImage from './Background';
 
 
 const Layout: React.FunctionComponent<{ children: React.ReactNode }> = (props) => {
   const [drawerShow, setDrawerShow] = useState(false);
   const drawerWidth = 180;
-  const main_bg_url = 'https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/wallhaven-g7g8rd.jpg';
+  // const main_bg_url = 'https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/wallhaven-g7g8rd.jpg';
 
   const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
@@ -31,7 +31,7 @@ const Layout: React.FunctionComponent<{ children: React.ReactNode }> = (props) =
   }));
 
   return (
-    <div style={{ 'display': 'flex' }}  >
+    <div style={{ 'display': 'flex'}} id="layout"  >
 
       <Drawer
         sx={{
@@ -61,7 +61,7 @@ const Layout: React.FunctionComponent<{ children: React.ReactNode }> = (props) =
         </IconButton>
         {props.children}
       </Main>
-    <BackgroundImage url={main_bg_url}/>
+    {/* <BackgroundImage url={main_bg_url}/> */}
     </div>
   );
 }

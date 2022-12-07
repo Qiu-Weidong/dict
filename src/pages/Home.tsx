@@ -2,17 +2,18 @@ import { Button, Container, Divider, Stack } from "@mui/material";
 import Search from "../components/Search";
 import Typewriter from 'typewriter-effect';
 import './Home.css';
-import BackgroundImage from "../components/Background";
+import { useNavigate } from "react-router-dom";
 
 
 function Home() {
   const strings: string[] = ["我见青山多妩媚，", "料青山见我应如是。", "情与貌，略相似。"];
-  const bg_url = "https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/wallhaven-47z5vy.jpg";
+  const navgate = useNavigate();
+
 
   return (
     <Container className="container">
       <h1 id="site-title" >古汉语词典</h1>
-      <Search></Search>
+      <Search search={(value) => navgate('/detail', { state: { query: value} } )}/>
       <Typewriter
         options={{
           strings: strings,
@@ -28,10 +29,19 @@ function Home() {
 
         <Button variant="contained" style={{fontWeight: 'bold'}}>反查文言</Button>
       </Stack>
-
-      <BackgroundImage url={bg_url} />
     </Container>
   );
 }
 
 export default Home;
+
+// function search(value: string) {
+//     console.log('输入内容', value);
+//     // todo 增加跳轉
+//     navgate('/detail', {
+//       state: { query: value }
+//     });
+
+//     // 可以使用 navagate(-1)來回退
+//   }
+

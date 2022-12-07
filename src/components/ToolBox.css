@@ -1,5 +1,5 @@
 .tool-box {
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   right: 8px;
   display: flex;
