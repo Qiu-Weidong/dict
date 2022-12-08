@@ -3,7 +3,6 @@ import { Search } from "../components/Search";
 import Typewriter from 'typewriter-effect';
 import './Home.css';
 import React from "react";
-// import { useNavigate } from "react-router-dom";
 
 
 export class Home extends React.Component<{history?: any}> {
