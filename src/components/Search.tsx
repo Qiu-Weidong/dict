@@ -1,59 +1,85 @@
-import { useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
+import React from "react";
+import { useLocation } from "react-router-dom";
 
-const Search: React.FunctionComponent<{search: (param: string) => void }> = (props) => {
-  const [input, setInput] = useState("");
-  const [options, setOptions] = useState<{ value: string }[]>([]);
-  const [lock, setLock] = useState(false);
 
-  function getCompleteList(value: string) {
-    if (!value) setOptions([]);
+export class Search extends React.Component<
+  { onSearch: (param: string) => void, defaultValue?: string },
+  { value: string, options: { value: string }[] }
+> {
+  private lock: boolean;
+
+  constructor(props: Readonly<{ onSearch: (param: string) => void }>) {
+    super(props);
+    this.lock = false;
+    this.state = { value: this.props.defaultValue || '', options: [] };
+  }
+
+  // componentDidMount() {
+  //   this.setState({ value: (this.props.defaultValue || '') });
+  // }
+
+  render(): React.ReactNode {
+    return (
+      <AutoComplete
+        options={this.state.options}
+        onSelect={(param: string) => { this.props.onSearch(param) }}
+      >
+        <TextField id="standard-basic"
+          label="請輸入要查詢的漢字" variant="standard"
+
+          InputProps={{
+            endAdornment: (
+              <IconButton
+                onClick={() => { this.props.onSearch(this.state.value) }}
+                type="button" aria-label="search">
+                <SearchIcon />
+              </IconButton>
+            )
+          }}
+          inputProps={{
+            value: this.state.value,
+            onChange: (e) => this.onChange(e.currentTarget.value),
+            onCompositionStart: () => this.lock = true,
+            onCompositionEnd: () => { this.lock = false; this.onChange(this.state.value); }
+          }}
+        >
+        </TextField>
+      </AutoComplete>
+    );
+  }
+
+
+  onChange(value: string) {
+    this.setState({ value });
+    if (!this.lock) {
+      this.getCompleteList(value);
+    }
+  }
+
+  getCompleteList(value: string) {
+    value = value.trim();
+    if (!value || value == '') this.setState({ options: [] });
     else {
       const simple = Simplized(value), tradition = Traditionalized(value);
       sqlite.select<{ character: string }[]>("select character from Dictionary \
         where character like '%" + simple + "%' or character like '%" + tradition + "%' ;").then(data => {
         const result = data.map(item => { return { value: item.character } });
-        setOptions(result);
+        this.setState({ options: result });
       });
     }
-
   }
 
-
-  return (
-    <AutoComplete
-      options={options}
-      onChange={(value) => {
-        if (lock) return;
-        getCompleteList(value);
-      }}
-      onSelect={(param: string) => { props.search(param) }}
-    >
-      <TextField id="standard-basic"
-        label="請輸入要查詢的漢字" variant="standard"
-        onChange={(e) => setInput(e.currentTarget.value)}
-        onCompositionStart={() => { setLock(true) }}
-        onCompositionEnd={() => { setLock(false); getCompleteList(input); }}
-
-        InputProps={{
-          endAdornment: (
-            <IconButton
-              onClick={() => { props.search(input) }}
-              type="button" aria-label="search">
-              <SearchIcon />
-            </IconButton>
-          )
-        }}
-      >
-      </TextField>
-    </AutoComplete>
-
-  );
 }
 
+
 export default Search;
+
+
+
+
 

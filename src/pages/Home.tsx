@@ -13,7 +13,7 @@ function Home() {
   return (
     <Container className="container">
       <h1 id="site-title" >古汉语词典</h1>
-      <Search search={(value) => navgate('/detail', { state: { query: value} } )}/>
+      <Search onSearch={(value) => navgate('/detail', { state: { query: value} } )}/>
       <Typewriter
         options={{
           strings: strings,
