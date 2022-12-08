@@ -20,7 +20,9 @@ export default class Detail extends React.Component<
 
   constructor(props: any) {
     super(props);
-    this.query = props.location.state.query || '';
+    this.query = props.match.params.query || '';
+    this.query = this.query.trim();
+    // this.query = props.location.state.query || '';
     this.state = { datas: [] };
   }
 

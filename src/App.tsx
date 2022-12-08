@@ -1,6 +1,6 @@
 import Home from "./pages/Home";
 import Detail from './pages/Detail';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import ToolBox from "./components/ToolBox";
 import NotFound from "./components/404";
 
@@ -10,13 +10,11 @@ function App() {
   return (
     <Router>
       <img src={bg_url} alt="" className="background-img"/>
+      <Route path="/" component={Home} exact  />
       <Route path="/home" component={Home} />
-      <Route path="/detail" component={Detail} />
+      <Route path="/detail/:query" component={Detail} />
       <Route path="/404" component={NotFound} />
       <Route path="*" component={ToolBox} />
-
-
-      <Redirect exact path="/" to="/home" />
     </Router>
 
   );

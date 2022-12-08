@@ -13,7 +13,7 @@ export class Home extends React.Component<{history?: any}> {
     return (
       <Container className="container">
         <h1 id="site-title" >古汉语词典</h1>
-        <Search onSearch={(value) => this.props.history.push('/detail', { query: value } )} />
+        <Search onSearch={(value) => this.props.history.push('/detail/' + value.trim() )} />
         <Typewriter
           options={{
             strings: this.strings,

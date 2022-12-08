@@ -1,7 +1,8 @@
 import { Card } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { Divider } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import {withRouter} from 'react-router-dom'
+
 
 export interface DictItem {
   character: string,
@@ -48,29 +49,27 @@ export function DictItemDisplay(props: { item: DictItem }) {
 
       {/* 接下来展示词头 */}
       <h4>词头</h4>
-      {/* <Stack spacing={1} direction="row"> */}
-        {props.item.prefix?.map(word => <Chip size="small"
-          variant="outlined" label={word}
-          onClick={() => console.log(word, props.item.character)}
-          // onClick={() => props.history.push('/home') }
-          key={word}
-          color="info"
-          sx={{ m: '1px 2px', }}
+      {props.item.prefix?.map(word => <Chip size="small"
+        variant="outlined" label={word}
+        onClick={() => console.log(word, props.item.character)}
+        // onClick={() => props.history.push('/home') }
+        key={word}
+        color="info"
+        sx={{ m: '1px 2px', }}
         />)}
-      {/* </Stack> */}
+
       {/* 接下来展示相关词 */}
       <h4>相关词</h4>
-      {/* <Stack spacing={1} direction="row"> */}
-        {
-          props.item.related?.map(word => <Chip
+      {
+        props.item.related?.map(word => <Chip
           size="small"
           onClick={() => console.log(word)}
           color='secondary'
-          sx={{ m: '1px 2px'}}
+          sx={{ m: '1px 2px' }}
           variant='outlined'
           label={word} />)
-        }
-      {/* </Stack> */}
+      }
+
 
       {/* 最后展示链接 */}
       {props.item.link ? <span>见 `{props.item.link}`</span> : ''}
@@ -84,3 +83,5 @@ function BlockDisplay(props: { block: Block }) {
     <div>{props.block.header.charactor}</div>
   );
 }
+
+// export default withRouter(DictItemDisplay);
