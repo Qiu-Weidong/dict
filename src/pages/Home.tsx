@@ -1,5 +1,5 @@
 import { Button, Container, Divider, Stack } from "@mui/material";
-import Search from "../components/Search";
+import {Search} from "../components/Search";
 import Typewriter from 'typewriter-effect';
 import './Home.css';
 import { useNavigate } from "react-router-dom";

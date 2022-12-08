@@ -22,7 +22,7 @@ export default class Detail extends React.Component {
               aria-label="menu"
               sx={{ m: 1, mr: 3 }}
             >
-              <img src={logo} />
+              <img src={logo} height={54} />
             </IconButton>
             <Search onSearch={(param) => console.log(param)} />
             <Box sx={{ flexGrow: 1 }} />

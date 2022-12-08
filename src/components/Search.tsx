@@ -4,11 +4,10 @@ import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 
 export class Search extends React.Component<
-  { onSearch: (param: string) => void, defaultValue?: string },
+  { onSearch: (param: string) => void },
   { value: string, options: { value: string }[] }
 > {
   private lock: boolean;
@@ -16,12 +15,8 @@ export class Search extends React.Component<
   constructor(props: Readonly<{ onSearch: (param: string) => void }>) {
     super(props);
     this.lock = false;
-    this.state = { value: this.props.defaultValue || '', options: [] };
+    this.state = { value: '', options: [] };
   }
-
-  // componentDidMount() {
-  //   this.setState({ value: (this.props.defaultValue || '') });
-  // }
 
   render(): React.ReactNode {
     return (
@@ -78,7 +73,6 @@ export class Search extends React.Component<
 
 
 export default Search;
-
 
 
 
