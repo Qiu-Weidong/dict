@@ -1,36 +1,40 @@
 import { Button, Container, Divider, Stack } from "@mui/material";
-import {Search} from "../components/Search";
+import { Search } from "../components/Search";
 import Typewriter from 'typewriter-effect';
 import './Home.css';
-import { useNavigate } from "react-router-dom";
+import React from "react";
+// import { useNavigate } from "react-router-dom";
 
 
-function Home() {
-  const strings: string[] = ["我见青山多妩媚，", "料青山见我应如是。", "情与貌，略相似。"];
-  const navgate = useNavigate();
+export class Home extends React.Component<{history?: any}> {
+  strings: string[] = ["我见青山多妩媚，", "料青山见我应如是。", "情与貌，略相似。"];
 
 
-  return (
-    <Container className="container">
-      <h1 id="site-title" >古汉语词典</h1>
-      <Search onSearch={(value) => navgate('/detail', { state: { query: value} } )}/>
-      <Typewriter
-        options={{
-          strings: strings,
-          autoStart: true,
-          loop: true,
-          wrapperClassName: "subtitle"
-        }}
-      />
-      <Divider variant="middle" />
+  render(): React.ReactNode {
+    return (
+      <Container className="container">
+        <h1 id="site-title" >古汉语词典</h1>
+        <Search onSearch={(value) => this.props.history.push('/detail', { query: value } )} />
+        <Typewriter
+          options={{
+            strings: this.strings,
+            autoStart: true,
+            loop: true,
+            wrapperClassName: "subtitle"
+          }}
+        />
+        <Divider variant="middle" />
 
-      <Stack direction="row" spacing={12} >
-        <Button variant="contained" color="secondary" style={{fontWeight: 'bold'}} >部首检字</Button>
+        <Stack direction="row" spacing={12} >
+          <Button variant="contained" color="secondary" style={{ fontWeight: 'bold' }} >部首检字</Button>
 
-        <Button variant="contained" style={{fontWeight: 'bold'}}>反查文言</Button>
-      </Stack>
-    </Container>
-  );
+          <Button variant="contained" style={{ fontWeight: 'bold' }}>反查文言</Button>
+        </Stack>
+      </Container>
+    );
+  }
+
+
 }
 
 export default Home;

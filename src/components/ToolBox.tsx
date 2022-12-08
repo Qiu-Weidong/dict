@@ -9,17 +9,16 @@ import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 
 import './ToolBox.css';
 import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
 
-function ToolBox() {
-  const navgate = useNavigate();
+function ToolBox(props: any) {
+  // const navgate = useNavigate();
   
   const content = (
     <div className='tools'>
-      <IconButton color="info" aria-label="home" size="small" onClick={() => navgate("/")}>
+      <IconButton color="info" aria-label="home" size="small" onClick={() => props.history.push("/home") }>
         <HomeIcon />
       </IconButton>
-      <IconButton color="info" aria-label="setting" size="small" onClick={() => navgate("/appbar")}>
+      <IconButton color="info" aria-label="setting" size="small" onClick={() => props.history.push("/settings") }>
         <SettingsIcon />
       </IconButton>
       <IconButton color="info" aria-label="zoomin" size="small">

@@ -7,7 +7,7 @@ import React from "react";
 
 
 export class Search extends React.Component<
-  { onSearch: (param: string) => void },
+  { onSearch: (param: string) => void, defaultValue?: string },
   { value: string, options: { value: string }[] }
 > {
   private lock: boolean;
@@ -15,14 +15,14 @@ export class Search extends React.Component<
   constructor(props: Readonly<{ onSearch: (param: string) => void }>) {
     super(props);
     this.lock = false;
-    this.state = { value: '', options: [] };
+    this.state = { value: this.props.defaultValue || '', options: [] };
   }
 
   render(): React.ReactNode {
     return (
       <AutoComplete
         options={this.state.options}
-        onSelect={(param: string) => { this.props.onSearch(param) }}
+        onSelect={(param: string) => { this.setState({value: param, options: []}); this.props.onSearch(param) }}
       >
         <TextField id="standard-basic"
           label="請輸入要查詢的漢字" variant="standard"
