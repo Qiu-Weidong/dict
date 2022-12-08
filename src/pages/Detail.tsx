@@ -9,7 +9,7 @@ import React from 'react';
 import sqlite from '../sqlite';
 
 
-export default class Detail extends React.Component {
+export default class Detail extends React.Component<{history:any}> {
   query: string;  // 查询的汉字
 
   constructor(props: any) {
@@ -22,7 +22,7 @@ export default class Detail extends React.Component {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" variant='elevation' color='default'>
           <Toolbar>
-            <IconButton
+            <IconButton onClick={() => this.props.history.push("/home") }
               size="small"
               edge="start"
               color="inherit"
