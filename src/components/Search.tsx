@@ -23,6 +23,7 @@ export class Search extends React.Component<
       <AutoComplete
         options={this.state.options}
         onSelect={(param: string) => { this.setState({value: param, options: []}); this.props.onSearch(param) }}
+        style={{ 'zIndex': '100' }}
       >
         <TextField id="standard-basic"
           label="請輸入要查詢的漢字" variant="standard"

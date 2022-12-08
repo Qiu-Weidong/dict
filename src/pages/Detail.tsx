@@ -8,7 +8,7 @@ import logo from '../assets/icon.svg';
 import React, { Fragment } from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
-import { DictItem } from '../components/Mdict';
+import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 
 
@@ -27,7 +27,7 @@ export default class Detail extends React.Component<
   render(): React.ReactNode {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" variant='elevation' color='default'>
+        <AppBar position="sticky" variant='elevation' color='default'>
           <Toolbar>
             <IconButton onClick={() => this.props.history.push("/home")}
               size="small"
@@ -43,6 +43,7 @@ export default class Detail extends React.Component<
             {/* <Button color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
+        {/* <Toolbar></Toolbar> */}
         <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
           <DictListDisplay items={this.state.datas} />
         </Container>
@@ -84,16 +85,9 @@ function DictListDisplay(props: { items: DictItem[] }) {
   else
     return (
       <Stack spacing={2}>
-        {props.items.map(item => <DictItemDisplay item={item} />)}
+        { props.items.map(item => <DictItemDisplay item={item} />) }
       </Stack>
     );
 }
 
-function DictItemDisplay(props: { item: DictItem }) {
-  return (
-    <Card >
-      {props.item.character}
-    </Card>
-  );
-}
 

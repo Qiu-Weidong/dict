@@ -3,7 +3,7 @@ import './404.css';
 
 
 export default function NotFound() {
-  return (<Card >
+  return (<Card raised>
     <div className="error-content">
       <div className="error-img">
         <img src="https://i.loli.net/2020/05/19/aKOcLiyPl2JQdFD.png" alt="Page not found" width="100%"
