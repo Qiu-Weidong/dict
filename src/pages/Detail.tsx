@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React from 'react';
 import sqlite from '../sqlite';
+import { Traditionalized, Simplized } from '../translate';
 
 
 export default class Detail extends React.Component<{history:any}> {
@@ -44,8 +45,14 @@ export default class Detail extends React.Component<{history:any}> {
     this.query = value.trim();
     if(! this.query) return;
 
-    // console.log('查询了', this.query);
-    sqlite.select("select json from Dictionary where character = '" + this.query + "';").then(data => {
+    const sim = Simplized(this.query);
+    const tra = Traditionalized(this.query);
+
+    sqlite.select("select json from Dictionary          \
+                    where character = '" + sim + "'     \
+                    or character = '" + tra + "'        \
+                    or character = '"+ this.query + "'  \
+                    ;").then(data => {
       console.log('查询结果', data);
     });
   }
