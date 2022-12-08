@@ -1,0 +1,35 @@
+.error-content {
+  overflow: hidden;
+  margin: 0 0px;
+  display: flex;
+}
+
+.error-content .error-img {
+  /* display: inline-block; */
+  display: block;
+  overflow: hidden;
+  width: 50%;
+  height: 100%;
+  background-color: cornflowerblue;
+}
+
+.error-content .error-info {
+  align-content: center;
+  width: 50%;
+  text-align: center;
+  font-family: 方正行楷繁体, 方正行楷简体, 华文行楷, FZXKB, FZXKJW, FZYBXSJW, XingKai;
+
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-content .error-info .error_title {
+  font-size: 6em;
+
+}
+
+.error-content .error-info .error_subtitle {
+  font-size: 1.2em;
+}

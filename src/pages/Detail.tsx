@@ -3,12 +3,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Search from '../components/Search';
-import { Button, Container, Card } from '@mui/material';
+import { Button, Container, Card, Stack } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React, { Fragment } from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
 import { DictItem } from '../components/Mdict';
+import NotFound from '../components/404';
 
 
 export default class Detail extends React.Component<
@@ -42,7 +43,7 @@ export default class Detail extends React.Component<
             {/* <Button color="inherit">Login</Button> */}
           </Toolbar>
         </AppBar>
-        <Container sx={{ mt: '1%' }}>
+        <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
           <DictListDisplay items={this.state.datas} />
         </Container>
       </Box>
@@ -78,13 +79,13 @@ export default class Detail extends React.Component<
 
 function DictListDisplay(props: { items: DictItem[] }) {
   if (props.items.length <= 0)
-    return (<Card>没有数据</Card>);
+    return <NotFound />;
 
   else
     return (
-      <Fragment >
+      <Stack spacing={2}>
         {props.items.map(item => <DictItemDisplay item={item} />)}
-      </Fragment>
+      </Stack>
     );
 }
 
