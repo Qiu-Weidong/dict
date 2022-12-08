@@ -1,5 +1,6 @@
 import { Card } from "@mui/material";
 import Chip from "@mui/material/Chip";
+import { Divider } from "antd";
 
 export interface DictItem {
   character: string,
@@ -39,6 +40,7 @@ export function DictItemDisplay(props: { item: DictItem }) {
       {/* 首先展示 character */}
       <h1>{props.item.character}</h1>
 
+      <Divider />
       {/* 接下来展示 blocks */}
       {props.item.blocks?.map(block => <BlockDisplay block={block} ></BlockDisplay>)}
 
