@@ -5,11 +5,12 @@ import IconButton from '@mui/material/IconButton';
 import Search from '../components/Search';
 import { Button, Container, Card, Stack } from '@mui/material';
 import logo from '../assets/icon.svg';
-import React, { Fragment } from 'react';
+import React from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
 import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
+import eventBus from '../eventbus';
 
 
 export default class Detail extends React.Component<
@@ -22,7 +23,7 @@ export default class Detail extends React.Component<
     super(props);
     this.query = props.match.params.query || '';
     this.query = this.query.trim();
-    // this.query = props.location.state.query || '';
+
     this.state = { datas: [] };
   }
 
@@ -76,6 +77,12 @@ export default class Detail extends React.Component<
 
   componentDidMount(): void {
     this.search(this.query);
+
+    eventBus.addListener('search', (msg) => this.search(msg) );
+  }
+
+  componentWillUnmount(): void {
+    eventBus.removeListener('search', (msg) => this.search(msg) );
   }
 }
 

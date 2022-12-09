@@ -1,7 +1,7 @@
 import { Card } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { Divider } from "@mui/material";
-import {withRouter} from 'react-router-dom'
+import eventBus from "../eventbus";
 
 
 export interface DictItem {
@@ -51,7 +51,7 @@ export function DictItemDisplay(props: { item: DictItem }) {
       <h4>词头</h4>
       {props.item.prefix?.map(word => <Chip size="small"
         variant="outlined" label={word}
-        onClick={() => console.log(word, props.item.character)}
+        onClick={() => {console.log(word, props.item.character); eventBus.emit('search', word); }}
         // onClick={() => props.history.push('/home') }
         key={word}
         color="info"
