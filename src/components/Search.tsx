@@ -1,9 +1,9 @@
-import { IconButton, TextField } from "@mui/material";
+import { IconButton, TextField, Button } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
-import React from "react";
+import React, { Fragment } from "react";
 import eventBus from "../eventbus";
 
 
@@ -23,18 +23,22 @@ export class Search extends React.Component<
     return (
       <AutoComplete
         options={this.state.options}
-        onSelect={(param: string) => { this.setState({value: param, options: []}); this.props.onSearch(param) }}
+        onSelect={(param: string) => { this.setState({ value: param, options: [] }); this.props.onSearch(param) }}
       >
         <TextField id="standard-basic"
           label="請輸入要查詢的漢字" variant="standard"
 
           InputProps={{
             endAdornment: (
-              <IconButton
-                onClick={() => { this.props.onSearch(this.state.value) }}
-                type="button" aria-label="search">
-                <SearchIcon />
-              </IconButton>
+              <Fragment>
+                {/* <Button size="small">繁簡</Button> */}
+
+                <IconButton
+                  onClick={() => { this.props.onSearch(this.state.value) }}
+                  type="button" aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              </Fragment>
             )
           }}
           inputProps={{
@@ -72,13 +76,13 @@ export class Search extends React.Component<
 
   // call_back = this.handleSearchEvent.bind(this);
   call_back = (param: string) => {
-    if(param.trim() !== this.state.value) {
+    if (param.trim() !== this.state.value) {
       this.setState({ value: param.trim() });
     }
   }
 
   componentDidMount(): void {
-    eventBus.addListener('search', this.call_back );
+    eventBus.addListener('search', this.call_back);
   }
 
   componentWillUnmount(): void {
