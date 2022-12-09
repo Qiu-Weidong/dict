@@ -153,13 +153,14 @@ function ContentDisplay(props: { children: Content }) {
             </List>
 
             {/* subcontent */}
-            <List>
-              {/* {props.children.subcontent ? props.children.subcontent.map((subcontent, index) => <SubContentDisplay item={subcontent} key={index}></SubContentDisplay>) : ''} */}
+            <List component="div">
               {
                 props.children.subcontent?.map((item, index) =>
                   <ListItem key={index}>
                     <b>{item.explain}</b>
-                    {item.examples?.map(exam => <span>{exam}</span>)}
+                    <List>
+                      {item.examples?.map(exam => <ListItem>{exam}</ListItem>)}
+                    </List>
                   </ListItem>
                 )
               }
