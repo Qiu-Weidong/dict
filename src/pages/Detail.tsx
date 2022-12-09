@@ -87,7 +87,7 @@ export default class Detail extends React.Component<
                     ;").then(datas => {
       for (const data of datas) {
         const item: DictItem = { ...JSON.parse(data.json), character: data.character };
-        console.log(item);
+        // console.log(item);
         result.push(item);
       }
       this.setState({ datas: result });

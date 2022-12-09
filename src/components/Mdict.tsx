@@ -108,33 +108,6 @@ export function DictItemDisplay(props: { children: DictItem }) {
   );
 }
 
-function SubContentDisplay(props: { item: SubContent }) {
-  return (<Fragment>
-    <ListItem>
-      <ListItemText
-        primary={<Fragment>
-          <b>{props.item.type ? '[' + props.item.type + ']' : ''}</b>
-          {props.item.explain}
-        </Fragment>}
-
-        secondary={
-          <Fragment>
-            {/*  例子 */}
-            <List component="div">
-              {
-                props.item.examples?.map((exam, index) => <ListItem key={index}>{exam}</ListItem>)
-              }
-            </List>
-          </Fragment>
-        }
-      />
-
-
-    </ListItem>
-
-  </Fragment>);
-}
-
 function ContentDisplay(props: { children: Content }) {
   return (
     <ListItem>
@@ -157,7 +130,7 @@ function ContentDisplay(props: { children: Content }) {
               {
                 props.children.subcontent?.map((item, index) =>
                   <ListItem key={index}>
-                    <b>{item.explain}</b>
+                    <b>{ item.type ? <b>[{item.type}]</b> : '' } {item.explain}</b>
                     <List>
                       {item.examples?.map(exam => <ListItem>{exam}</ListItem>)}
                     </List>
