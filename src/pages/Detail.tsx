@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Search from '../components/Search';
-import { Container, Stack } from '@mui/material';
+import { Button, Container, Stack } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React from 'react';
 import sqlite from '../sqlite';
@@ -43,9 +43,11 @@ export default class Detail extends React.Component<
             </IconButton>
             <Search onSearch={(param) => this.search(param)} />
             <Box sx={{ flexGrow: 1 }} />
-            <IconButton >
+            {/* <IconButton >
               <MoreVertIcon />
-            </IconButton>
+            </IconButton> */}
+            <Button color='inherit'>首頁</Button>
+            <Button color='inherit'>設置</Button>
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
