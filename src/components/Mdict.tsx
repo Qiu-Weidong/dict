@@ -3,8 +3,9 @@ import Chip from "@mui/material/Chip";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import eventBus from "../eventbus";
 import { Fragment } from "react";
-import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Avatar } from "antd";
 
 
 export interface DictItem {
@@ -109,7 +110,7 @@ function HeaderDisplay(props: { header: Header }) {
   return (
     <CardHeader
       avatar={
-        <h2>{props.header.character}</h2>
+        <h1>{props.header.character}</h1>
       }
       action={
         <IconButton aria-label="settings">
@@ -157,52 +158,51 @@ function ContentDisplay(props: { content: Content }) {
 
 function ContentListDisplay(props: { contents: Content[], index: number }) {
   return (
-    <Fragment >
+    // <Fragment >
       <ListItem >
-        <List >
-          {
-            props.contents.map((content, index) => <ContentDisplay content={content} key={index}></ContentDisplay>)
-          }
-        </List>
+        <ListItemAvatar>
+          <Avatar>{props.index + 1}</Avatar>
+        </ListItemAvatar>
+        <ListItemText primary={
+          <List >
+            {
+              props.contents.map((content, index) => <ContentDisplay content={content} key={index}></ContentDisplay>)
+            }
+          </List>
+        } />
+
       </ListItem >
-      <Divider />
-    </Fragment>
+    //   {/* {
+    //     props.index < props.total - 1 ? <Divider variant="inset" component="li" /> : ''
+    //   }
+
+    // </Fragment> */}
   );
 }
 
 function BlockDisplay(props: { block: Block }) {
+  const total = props.block.content.length;
   return (
-    <Card >
+    <Fragment >
       <HeaderDisplay header={props.block.header} />
-      <Divider />
+      {/* <Divider /> */}
       <CardContent >
         <List>
-          {props.block.content.map((contents, index) => <ContentListDisplay index={index + 1} contents={contents} key={index} />)}
+          {
+            props.block.content.map((contents, index) => 
+              <Fragment>
+                <ContentListDisplay index={index} contents={contents} key={index} />
+                {
+                  index < total - 1 ? <Divider variant="inset" component="li" /> : ''
+                }
+              </Fragment>
+            )
+          }
         </List>
       </CardContent>
-    </Card>
+      {/* <Divider variant="inset" /> */}
+    </Fragment>
   );
 }
 
 
-const fu = () => {
-  return (
-    <>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          {/* <Typography>Accordion 1</Typography> */}
-        </AccordionSummary>
-        <AccordionDetails>
-          {/* <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography> */}
-        </AccordionDetails>
-      </Accordion>
-    </>
-  );
-}
