@@ -12,16 +12,19 @@ import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 import eventBus from '../eventbus';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 export default class Detail extends React.Component<
   { history: any, match: any },
   { datas: DictItem[] }
 > {
+  queries: string[];
 
   constructor(props: any) {
     super(props);
     this.state = { datas: [] };
+    this.queries = [];
   }
 
   render(): React.ReactNode {
@@ -46,8 +49,24 @@ export default class Detail extends React.Component<
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
-        <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
-          <DictListDisplay>{this.state.datas}</DictListDisplay> 
+        <Container sx={{ position: 'relative' }}>
+          <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
+            <DictListDisplay>{this.state.datas}</DictListDisplay>
+          </Container>
+          <IconButton style={{ 'position': 'fixed', 'top': '85px', 'left': '6px' }}
+            onClick={() => {
+              console.info(this.queries);
+              if(this.queries.length <= 1) { console.log(this.queries); return; }
+              const current = this.queries.pop() || '';
+              const last = this.queries.pop() || '';
+              if(! last) return;
+              this.search(last);
+              eventBus.emit('search', last);
+              console.info(this.queries);
+            } }
+          >
+            <ArrowBackIcon />
+          </IconButton>
         </Container>
       </Box>
     );
@@ -55,7 +74,7 @@ export default class Detail extends React.Component<
 
   search(value: string): void {
     const query = value.trim();
-    if (! query) return;
+    if (!query) return;
 
     const result: DictItem[] = [];
     const sim = Simplized(query);
@@ -74,11 +93,13 @@ export default class Detail extends React.Component<
       this.setState({ datas: result });
     });
 
-
+    this.queries.push(query);
+    this.queries = Array.from(new Set(this.queries))
   }
 
+  call_back = (param: string) => this.search(param);
   componentDidMount(): void {
-    eventBus.addListener('search', (msg) => this.search(msg) );
+    eventBus.addListener('search', this.call_back);
 
     const query = this.props.match.params.query.trim() || '';
     this.search(query);
@@ -88,7 +109,7 @@ export default class Detail extends React.Component<
   }
 
   componentWillUnmount(): void {
-    eventBus.removeListener('search', (msg) => this.search(msg) );
+    eventBus.removeListener('search', this.call_back);
   }
 }
 
@@ -100,7 +121,7 @@ function DictListDisplay(props: { children: DictItem[] }) {
   else
     return (
       <Stack spacing={2}>
-        { props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>) }
+        {props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
       </Stack>
     );
 }

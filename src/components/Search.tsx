@@ -70,22 +70,20 @@ export class Search extends React.Component<
     }
   }
 
-  
+  // call_back = this.handleSearchEvent.bind(this);
+  call_back = (param: string) => {
+    if(param.trim() !== this.state.value) {
+      this.setState({ value: param.trim() });
+    }
+  }
 
   componentDidMount(): void {
-    eventBus.addListener('search', (param: string) => {
-      if(param.trim() !== this.state.value) {
-        this.setState({ value: param.trim() });
-      }
-    });
+    eventBus.addListener('search', this.call_back );
   }
 
   componentWillUnmount(): void {
-    eventBus.removeListener('search', (param: string) => {
-      if(param.trim() !== this.state.value) {
-        this.setState({ value: param.trim() });
-      }
-    }  );
+    eventBus.removeListener('search', this.call_back);
+    // console.log('unmount后', eventBus);
   }
 }
 
