@@ -4,6 +4,7 @@ import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
 import sqlite from "../sqlite";
 import React from "react";
+import eventBus from "../eventbus";
 
 
 export class Search extends React.Component<
@@ -69,6 +70,23 @@ export class Search extends React.Component<
     }
   }
 
+  
+
+  componentDidMount(): void {
+    eventBus.addListener('search', (param: string) => {
+      if(param.trim() !== this.state.value) {
+        this.setState({ value: param.trim() });
+      }
+    });
+  }
+
+  componentWillUnmount(): void {
+    eventBus.removeListener('search', (param: string) => {
+      if(param.trim() !== this.state.value) {
+        this.setState({ value: param.trim() });
+      }
+    }  );
+  }
 }
 
 

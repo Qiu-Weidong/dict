@@ -2,6 +2,7 @@ import { Card } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { Divider } from "@mui/material";
 import eventBus from "../eventbus";
+import { workerData } from "worker_threads";
 
 
 export interface DictItem {
@@ -36,6 +37,14 @@ interface SubContent {
   examples?: string[]
 }
 
+function jump(word: string, character: string) {
+  const re = /～+/g;
+  const new_word = word.replaceAll(re, character);
+  // console.log(new_word);
+  eventBus.emit('search', new_word);
+}
+
+
 export function DictItemDisplay(props: { item: DictItem }) {
 
   return (
@@ -45,34 +54,39 @@ export function DictItemDisplay(props: { item: DictItem }) {
 
       <Divider />
       {/* 接下来展示 blocks */}
-      {props.item.blocks?.map(block => <BlockDisplay block={block} ></BlockDisplay>)}
+      {props.item.blocks?.map( (block, index) => <BlockDisplay block={block} key={index} ></BlockDisplay>)}
 
       {/* 接下来展示词头 */}
-      <h4>词头</h4>
-      {props.item.prefix?.map(word => <Chip size="small"
+      <Chip label="词头" size="small" color="info" />
+      {
+        props.item.prefix?.map((word, index) => <Chip size="small"
         variant="outlined" label={word}
-        onClick={() => {console.log(word, props.item.character); eventBus.emit('search', word); }}
-        // onClick={() => props.history.push('/home') }
-        key={word}
+        onClick={() => jump(word, props.item.character) }
+        key={index}
         color="info"
         sx={{ m: '1px 2px', }}
-        />)}
+        />)
+      }
 
+      <br />
       {/* 接下来展示相关词 */}
-      <h4>相关词</h4>
+      <Chip label="相关词" size="small" color="secondary" />
       {
-        props.item.related?.map(word => <Chip
+        props.item.related?.map((word, index) => <Chip
+          onClick={() => jump(word, props.item.character) }
           size="small"
-          onClick={() => console.log(word)}
           color='secondary'
           sx={{ m: '1px 2px' }}
           variant='outlined'
+          key={index}
           label={word} />)
       }
-
+      <br />
 
       {/* 最后展示链接 */}
-      {props.item.link ? <span>见 `{props.item.link}`</span> : ''}
+      {props.item.link ? <span>见 `<Chip 
+        size="small" color="success" variant="outlined" onClick={() => jump(props.item.link as string, props.item.character)}
+        label={props.item.link}/>`</span> : ''}
     </Card>
   );
 }

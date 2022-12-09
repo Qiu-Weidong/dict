@@ -14,16 +14,12 @@ import eventBus from '../eventbus';
 
 
 export default class Detail extends React.Component<
-  { history: any },
+  { history: any, match: any },
   { datas: DictItem[] }
 > {
-  query: string;  // 查询的汉字
 
   constructor(props: any) {
     super(props);
-    this.query = props.match.params.query || '';
-    this.query = this.query.trim();
-
     this.state = { datas: [] };
   }
 
@@ -41,7 +37,7 @@ export default class Detail extends React.Component<
             >
               <img src={logo} height={54} />
             </IconButton>
-            <Search onSearch={(param) => this.search(param)} defaultValue={this.query} />
+            <Search onSearch={(param) => this.search(param)} />
             <Box sx={{ flexGrow: 1 }} />
             {/* <Button color="inherit">Login</Button> */}
           </Toolbar>
@@ -55,17 +51,17 @@ export default class Detail extends React.Component<
   }
 
   search(value: string): void {
-    this.query = value.trim();
-    if (!this.query) return;
+    const query = value.trim();
+    if (! query) return;
 
     const result: DictItem[] = [];
-    const sim = Simplized(this.query);
-    const tra = Traditionalized(this.query);
+    const sim = Simplized(query);
+    const tra = Traditionalized(query);
 
     sqlite.select<{ json: string, character: string }[]>("select json, character from Dictionary          \
                     where character = '" + sim + "'     \
                     or character = '" + tra + "'        \
-                    or character = '"+ this.query + "'  \
+                    or character = '"+ query + "'  \
                     ;").then(datas => {
       for (const data of datas) {
         const item: DictItem = { ...JSON.parse(data.json), character: data.character };
@@ -73,12 +69,18 @@ export default class Detail extends React.Component<
       }
       this.setState({ datas: result });
     });
+
+
   }
 
   componentDidMount(): void {
-    this.search(this.query);
-
     eventBus.addListener('search', (msg) => this.search(msg) );
+
+    const query = this.props.match.params.query.trim() || '';
+    this.search(query);
+
+    // 如果不是直接在搜索框中点击search，那么需要发送一个消息来同步搜索框
+    eventBus.emit('search', query);
   }
 
   componentWillUnmount(): void {
@@ -94,7 +96,7 @@ function DictListDisplay(props: { items: DictItem[] }) {
   else
     return (
       <Stack spacing={2}>
-        { props.items.map(item => <DictItemDisplay item={item} />) }
+        { props.items.map((item, index) => <DictItemDisplay key={index} item={item} />) }
       </Stack>
     );
 }
