@@ -30,7 +30,7 @@ export default class Detail extends React.Component<
   render(): React.ReactNode {
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="sticky" variant='elevation' color='default'>
+        <AppBar position="sticky" variant='elevation' color='default' >
           <Toolbar>
             <IconButton onClick={() => this.props.history.push("/home")}
               size="small"
@@ -53,7 +53,9 @@ export default class Detail extends React.Component<
           <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
             <DictListDisplay>{this.state.datas}</DictListDisplay>
           </Container>
-          <IconButton style={{ 'position': 'fixed', 'top': '85px', 'left': '6px' }}
+          <IconButton style={{ 'position': 'fixed', 'top': '85px', 'left': '6px' }} 
+            color="info"
+            size='small'
             onClick={() => {
               console.info(this.queries);
               if(this.queries.length <= 1) { console.log(this.queries); return; }
@@ -93,8 +95,9 @@ export default class Detail extends React.Component<
       this.setState({ datas: result });
     });
 
-    this.queries.push(query);
-    this.queries = Array.from(new Set(this.queries))
+    if(this.queries.at(this.queries.length - 1) !== query)
+      this.queries.push(query);
+    // this.queries = Array.from(new Set(this.queries))
   }
 
   call_back = (param: string) => this.search(param);
