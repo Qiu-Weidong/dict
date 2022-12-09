@@ -41,6 +41,7 @@ interface Content {
 interface SubContent {
   explain?: string,
   examples?: string[]
+  type?: string
 }
 
 function jump(word: string, character: string) {
@@ -51,29 +52,32 @@ function jump(word: string, character: string) {
 }
 
 
-export function DictItemDisplay(props: { item: DictItem }) {
-  const show_title = props.item.blocks ? false : true;
-  const show_prefix: boolean = props.item.prefix ? true : false;
-  const show_related: boolean = props.item.related ? true : false;
+export function DictItemDisplay(props: { children: DictItem }) {
+  const show_title = props.children.blocks ? false : true;
+  const show_prefix: boolean = props.children.prefix ? true : false;
+  const show_related: boolean = props.children.related ? true : false;
   return (
     <Card raised >
 
       {
         /* 首先展示 character, 如果没有 block的话 */
-        show_title ? <HeaderDisplay header={{ character: props.item.character }} /> : ''
+        show_title ? <CardHeader
+          avatar={
+            <h1>{props.children.character}</h1>
+          } /> : ''
       }
 
       {/* 接下来展示 blocks */
-        props.item.blocks?.map((block, index) => <BlockDisplay block={block} key={index} ></BlockDisplay>)
+        props.children.blocks?.map((block, index) => <BlockDisplay key={index} >{block}</BlockDisplay>)
       }
 
       {
         /* 接下来展示词头 */
         show_prefix ? <CardContent><Chip label="词头" size="small" color="info" />
           {
-            props.item.prefix?.map((word, index) => <Chip size="small"
+            props.children.prefix?.map((word, index) => <Chip size="small"
               variant="outlined" label={word}
-              onClick={() => jump(word, props.item.character)}
+              onClick={() => jump(word, props.children.character)}
               key={index}
               color="info"
               sx={{ m: '1px 2px', }}
@@ -84,8 +88,8 @@ export function DictItemDisplay(props: { item: DictItem }) {
       {/* 接下来展示相关词 */
         show_related ? <CardContent ><Chip label="相关词" size="small" color="secondary" />
           {
-            props.item.related?.map((word, index) => <Chip
-              onClick={() => jump(word, props.item.character)}
+            props.children.related?.map((word, index) => <Chip
+              onClick={() => jump(word, props.children.character)}
               size="small"
               color='secondary'
               sx={{ m: '1px 2px' }}
@@ -96,102 +100,126 @@ export function DictItemDisplay(props: { item: DictItem }) {
       }
 
       {/* 最后展示链接 */
-        props.item.link ? <CardContent>见 `<Chip
-          size="small" color="success" variant="outlined" onClick={() => jump(props.item.link as string, props.item.character)}
-          label={props.item.link} />`</CardContent> : ''
+        props.children.link ? <CardContent>见 `<Chip
+          size="small" color="success" variant="outlined" onClick={() => jump(props.children.link as string, props.children.character)}
+          label={props.children.link} />`</CardContent> : ''
       }
     </Card>
   );
 }
 
-function HeaderDisplay(props: { header: Header }) {
-  const header = props.header;
+function SubContentDisplay(props: { item: SubContent }) {
+  return (<Fragment>
+    <ListItem>
+      <ListItemText
+        primary={<Fragment>
+          <b>{props.item.type ? '[' + props.item.type + ']' : ''}</b>
+          {props.item.explain}
+        </Fragment>}
 
-  return (
-    <CardHeader
-      avatar={
-        <h1>{props.header.character}</h1>
-      }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
-      title={props.header.pronunciation}
-      subheader={
-        <Fragment>
-          {header.radical ? <span style={{ 'paddingRight': '15px' }}><b>部首:</b>{header.radical}</span> : ''}
-          {header.strokes ? <span style={{ 'paddingRight': '15px' }}><b>笔画:</b>{header.strokes}</span> : ''}
-          {header.struct ? <span style={{ 'paddingRight': '15px' }}><b>结构:</b>{header.struct}</span> : ''}
-          {header.variant ? <span style={{ 'paddingRight': '15px' }}><b>异体字:</b>{header.variant}</span> : ''}
-        </Fragment>
-      }
-    />
-  );
-}
-
-function ContentDisplay(props: { content: Content }) {
-  return (
-    <Fragment>
-      <ListItem>
-        <ListItemText
-          primary={<Fragment>
-            <b>{props.content.type ? '[' + props.content.type + ']' : ''}</b>
-            {props.content.explain}
-          </Fragment>}
-          secondary={
+        secondary={
+          <Fragment>
+            {/*  例子 */}
             <List component="div">
               {
-                props.content.examples?.map((exam, index) => <ListItem key={index}>{exam}</ListItem>)
+                props.item.examples?.map((exam, index) => <ListItem key={index}>{exam}</ListItem>)
               }
             </List>
-          }
-        />
+          </Fragment>
+        }
+      />
 
 
-      </ListItem>
+    </ListItem>
 
-    </Fragment>
-
-  );
+  </Fragment>);
 }
 
-function ContentListDisplay(props: { contents: Content[], index: number }) {
+function ContentDisplay(props: { children: Content }) {
   return (
-    // <Fragment >
-      <ListItem >
-        <ListItemAvatar>
-          <Avatar>{props.index + 1}</Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={
-          <List >
-            {
-              props.contents.map((content, index) => <ContentDisplay content={content} key={index}></ContentDisplay>)
-            }
-          </List>
-        } />
+    <ListItem>
+      <ListItemText
+        primary={<Fragment>
+          <b>{props.children.type ? '[' + props.children.type + ']' : ''}</b>
+          {props.children.explain}
+        </Fragment>}
+        secondary={
+          <Fragment>
+            {/*  例子 */}
+            <List component="div">
+              {
+                props.children.examples?.map((exam, index) => <ListItem key={index}>{exam}</ListItem>)
+              }
+            </List>
 
-      </ListItem >
-    //   {/* {
-    //     props.index < props.total - 1 ? <Divider variant="inset" component="li" /> : ''
-    //   }
+            {/* subcontent */}
+            <List>
+              {/* {props.children.subcontent ? props.children.subcontent.map((subcontent, index) => <SubContentDisplay item={subcontent} key={index}></SubContentDisplay>) : ''} */}
+              {
+                props.children.subcontent?.map((item, index) =>
+                  <ListItem key={index}>
+                    <b>{item.explain}</b>
+                    {item.examples?.map(exam => <span>{exam}</span>)}
+                  </ListItem>
+                )
+              }
+            </List>
+          </Fragment>
+        }
+      />
 
-    // </Fragment> */}
+
+    </ListItem>
+
+
   );
 }
 
-function BlockDisplay(props: { block: Block }) {
-  const total = props.block.content.length;
+function ContentListDisplay(props: { children: Content[], index: number }) {
+  return (
+    <ListItem >
+      <ListItemAvatar>
+        <Avatar>{props.index + 1}</Avatar>
+      </ListItemAvatar>
+      <ListItemText primary={
+        <List >
+          {
+            props.children.map((content, index) => <ContentDisplay key={index}>{content}</ContentDisplay>)
+          }
+        </List>
+      } />
+
+    </ListItem >
+  );
+}
+
+function BlockDisplay(props: { children: Block }) {
+  const total = props.children.content.length;
+  const header = props.children.header;
+
   return (
     <Fragment >
-      <HeaderDisplay header={props.block.header} />
-      {/* <Divider /> */}
+      {/* <HeaderDisplay header={props.block.header} /> */}
+      <CardHeader
+        avatar={
+          <h1>{header.character}</h1>
+        }
+        title={header.pronunciation}
+        subheader={
+          <Fragment>
+            {header.radical ? <span style={{ 'paddingRight': '15px' }}><b>部首:</b>{header.radical}</span> : ''}
+            {header.strokes ? <span style={{ 'paddingRight': '15px' }}><b>笔画:</b>{header.strokes}</span> : ''}
+            {header.struct ? <span style={{ 'paddingRight': '15px' }}><b>结构:</b>{header.struct}</span> : ''}
+            {header.variant ? <span style={{ 'paddingRight': '15px' }}><b>异体字:</b>{header.variant}</span> : ''}
+          </Fragment>
+        }
+      />
       <CardContent >
         <List>
           {
-            props.block.content.map((contents, index) => 
-              <Fragment>
-                <ContentListDisplay index={index} contents={contents} key={index} />
+            props.children.content.map((contents, index) =>
+              <Fragment key={index}>
+                <ContentListDisplay index={index}>{contents}</ContentListDisplay>
                 {
                   index < total - 1 ? <Divider variant="inset" component="li" /> : ''
                 }
@@ -200,7 +228,6 @@ function BlockDisplay(props: { block: Block }) {
           }
         </List>
       </CardContent>
-      {/* <Divider variant="inset" /> */}
     </Fragment>
   );
 }

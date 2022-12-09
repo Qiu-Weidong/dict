@@ -47,7 +47,7 @@ export default class Detail extends React.Component<
         </AppBar>
         {/* <Toolbar></Toolbar> */}
         <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
-          <DictListDisplay items={this.state.datas} />
+          <DictListDisplay>{this.state.datas}</DictListDisplay> 
         </Container>
       </Box>
     );
@@ -68,7 +68,7 @@ export default class Detail extends React.Component<
                     ;").then(datas => {
       for (const data of datas) {
         const item: DictItem = { ...JSON.parse(data.json), character: data.character };
-        console.log(item);
+        // console.log(item);
         result.push(item);
       }
       this.setState({ datas: result });
@@ -93,14 +93,14 @@ export default class Detail extends React.Component<
 }
 
 
-function DictListDisplay(props: { items: DictItem[] }) {
-  if (props.items.length <= 0)
+function DictListDisplay(props: { children: DictItem[] }) {
+  if (props.children.length <= 0)
     return <NotFound />;
 
   else
     return (
       <Stack spacing={2}>
-        { props.items.map((item, index) => <DictItemDisplay key={index} item={item} />) }
+        { props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>) }
       </Stack>
     );
 }
