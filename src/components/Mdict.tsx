@@ -1,8 +1,9 @@
-import { Avatar, Card, CardHeader, IconButton } from "@mui/material";
+import { Avatar, Card, CardHeader, Divider, IconButton } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import eventBus from "../eventbus";
 import { red } from "@mui/material/colors";
+import { Fragment } from "react";
 
 
 export interface DictItem {
@@ -53,24 +54,10 @@ export function DictItemDisplay(props: { item: DictItem }) {
   const show_related: boolean = props.item.related ? true : false;
   return (
     <Card raised >
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" style={{ 'backgroundColor': 'transparent', 'color': 'black', 'fontWeight': 'bold' }} >
-            {props.item.character}
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
 
       {
         /* 首先展示 character */
-        show_title ? <h3>{props.item.character}</h3> : ''
+        show_title ? <HeaderDisplay header={{ character: props.item.character }} /> : ''
       }
 
 
@@ -114,6 +101,8 @@ export function DictItemDisplay(props: { item: DictItem }) {
 }
 
 function HeaderDisplay(props: { header: Header }) {
+  const header = props.header;
+
   return (
     <CardHeader
         avatar={
@@ -126,14 +115,21 @@ function HeaderDisplay(props: { header: Header }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={props.header.pronunciation}
+        subheader={ 
+          <Fragment>
+            { header.radical ? <span style={{ 'paddingRight': '15px' }}><b>部首:</b>{header.radical}</span> : '' }
+            { header.strokes ? <span style={{ 'paddingRight': '15px' }}><b>笔画:</b>{header.strokes}</span> : '' }
+            { header.struct ? <span style={{ 'paddingRight': '15px' }}><b>结构:</b>{header.struct}</span> : '' }
+            { header.variant ? <span style={{ 'paddingRight': '15px' }}><b>异体字:</b>{header.variant}</span> : '' }
+          </Fragment> 
+        }
       />
   );
 }
 function BlockDisplay(props: { block: Block }) {
   return (
-    <h3>{props.block.header.character}</h3>
+    <HeaderDisplay header={props.block.header}/>
   );
 }
 
