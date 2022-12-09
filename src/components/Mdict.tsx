@@ -113,7 +113,7 @@ function ContentDisplay(props: { children: Content }) {
     <ListItem>
       <ListItemText
         primary={<Fragment>
-          <b>{props.children.type ? '[' + props.children.type + ']' : ''}</b>
+          <b>{props.children.type ? '[' + props.children.type + '] ' : ''}</b>
           {props.children.explain}
         </Fragment>}
         secondary={
@@ -130,7 +130,7 @@ function ContentDisplay(props: { children: Content }) {
               {
                 props.children.subcontent?.map((item, index) =>
                   <ListItem key={index}>
-                    <b>{ item.type ? <b>[{item.type}]</b> : '' } {item.explain}</b>
+                    <div style={{ 'minWidth': '20%' }}><b>{ item.type ? <b>[{item.type}]</b> : '' } {item.explain}</b></div>
                     <List>
                       {item.examples?.map(exam => <ListItem>{exam}</ListItem>)}
                     </List>

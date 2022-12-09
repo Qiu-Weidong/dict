@@ -11,7 +11,7 @@ import { Traditionalized, Simplized } from '../translate';
 import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 import eventBus from '../eventbus';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 

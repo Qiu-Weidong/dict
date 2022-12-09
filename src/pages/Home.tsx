@@ -27,7 +27,9 @@ export class Home extends React.Component<{history?: any}> {
         <Stack direction="row" spacing={12} >
           <Button variant="contained" color="secondary" style={{ fontWeight: 'bold' }} >部首检字</Button>
 
-          <Button variant="contained" style={{ fontWeight: 'bold' }}>反查文言</Button>
+          <Button variant="contained" style={{ fontWeight: 'bold' }}
+          onClick={() => this.props.history.push('/reverselookup') }
+          >反查文言</Button>
         </Stack>
       </Container>
     );
