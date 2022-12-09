@@ -1,8 +1,10 @@
-import { Avatar, Card, CardContent, CardHeader, Divider, IconButton } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import eventBus from "../eventbus";
 import { Fragment } from "react";
+import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 export interface DictItem {
@@ -29,6 +31,7 @@ interface Header {
 }
 
 interface Content {
+  type?: string,
   explain?: string,
   subcontent?: SubContent[],
   examples?: string[]
@@ -106,9 +109,7 @@ function HeaderDisplay(props: { header: Header }) {
   return (
     <CardHeader
       avatar={
-        <Avatar aria-label="recipe" style={{ 'backgroundColor': 'transparent', 'color': 'black', 'fontWeight': 'bold' }} >
-          {props.header.character}
-        </Avatar>
+        <h2>{props.header.character}</h2>
       }
       action={
         <IconButton aria-label="settings">
@@ -128,21 +129,80 @@ function HeaderDisplay(props: { header: Header }) {
   );
 }
 
-function ContentListDisplay(props: { contents: Content[], index: number }) {
-  return (<>
-  {props.index}
-  </>);
+function ContentDisplay(props: { content: Content }) {
+  return (
+    <Fragment>
+      <ListItem>
+        <ListItemText
+          primary={<Fragment>
+            <b>{props.content.type ? '[' + props.content.type + ']' : ''}</b>
+            {props.content.explain}
+          </Fragment>}
+          secondary={
+            <List component="div">
+              {
+                props.content.examples?.map((exam, index) => <ListItem key={index}>{exam}</ListItem>)
+              }
+            </List>
+          }
+        />
+
+
+      </ListItem>
+
+    </Fragment>
+
+  );
 }
 
-function BlockDisplay(props: { block: Block }) {
+function ContentListDisplay(props: { contents: Content[], index: number }) {
   return (
     <Fragment >
-      <HeaderDisplay header={props.block.header} />
-      <CardContent >
-      { props.block.content.map((contents, index) => <ContentListDisplay index={index+1} contents={contents} key={index} /> ) }
-      </CardContent>
+      <ListItem >
+        <List >
+          {
+            props.contents.map((content, index) => <ContentDisplay content={content} key={index}></ContentDisplay>)
+          }
+        </List>
+      </ListItem >
+      <Divider />
     </Fragment>
   );
 }
 
-// export default withRouter(DictItemDisplay);
+function BlockDisplay(props: { block: Block }) {
+  return (
+    <Card >
+      <HeaderDisplay header={props.block.header} />
+      <Divider />
+      <CardContent >
+        <List>
+          {props.block.content.map((contents, index) => <ContentListDisplay index={index + 1} contents={contents} key={index} />)}
+        </List>
+      </CardContent>
+    </Card>
+  );
+}
+
+
+const fu = () => {
+  return (
+    <>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          {/* <Typography>Accordion 1</Typography> */}
+        </AccordionSummary>
+        <AccordionDetails>
+          {/* <Typography>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+            malesuada lacus ex, sit amet blandit leo lobortis eget.
+          </Typography> */}
+        </AccordionDetails>
+      </Accordion>
+    </>
+  );
+}

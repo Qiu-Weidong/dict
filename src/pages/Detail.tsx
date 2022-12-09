@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Search from '../components/Search';
-import { Button, Container, Card, Stack } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React from 'react';
 import sqlite from '../sqlite';
@@ -11,6 +11,7 @@ import { Traditionalized, Simplized } from '../translate';
 import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 import eventBus from '../eventbus';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 export default class Detail extends React.Component<
@@ -39,7 +40,9 @@ export default class Detail extends React.Component<
             </IconButton>
             <Search onSearch={(param) => this.search(param)} />
             <Box sx={{ flexGrow: 1 }} />
-            {/* <Button color="inherit">Login</Button> */}
+            <IconButton >
+              <MoreVertIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
