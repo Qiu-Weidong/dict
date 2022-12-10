@@ -1,4 +1,4 @@
-import { Button, Container, Divider, Stack } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { Search } from "../components/Search";
 import Typewriter from 'typewriter-effect';
 import './Home.css';
@@ -22,7 +22,7 @@ export class Home extends React.Component<{history?: any}> {
             wrapperClassName: "subtitle"
           }}
         />
-        <Divider variant="middle" />
+        {/* <Divider variant="middle" /> */}
 
         <Stack direction="row" spacing={12} >
           <Button variant="contained" color="secondary" style={{ fontWeight: 'bold' }} >部首检字</Button>

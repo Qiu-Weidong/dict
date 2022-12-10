@@ -2,7 +2,11 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import { Button, Container, Card, TextField, CardContent, List, ListItem, ListItemText, ListItemButton, Pagination } from '@mui/material';
+import {
+  Button, Container, Card,
+  TextField, CardContent, List, ListItem, ListItemText, ListItemButton,
+  Pagination, Stack
+} from '@mui/material';
 import logo from '../assets/icon.svg';
 import React, { Fragment, useState } from 'react';
 import sqlite from '../sqlite';
@@ -68,11 +72,10 @@ export default class ReverseLookup extends React.Component<
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
-        <Container sx={{ position: 'relative' }}>
-          <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
-            <ResultDisplay >{ this.state.datas }</ResultDisplay>
-          </Container>
+        <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
+          <ResultDisplay >{this.state.datas}</ResultDisplay>
         </Container>
+
       </Box>
     );
   }
@@ -97,47 +100,65 @@ export default class ReverseLookup extends React.Component<
 
 
 class ResultDisplay extends React.Component<
-  { children: ResultType }
+  { children: ResultType },
+  { currentPage: number, totalPage: number }
 > {
 
-  page_count: number;
   num_per_page: number;
-  current_page: number;
 
   constructor(props: any) {
     super(props);
     this.num_per_page = 10; // 每页显示10条
-    this.current_page = 1;
-    this.page_count = Math.ceil(props.children.length / this.num_per_page);
 
+    this.state = {
+      currentPage: 1,
+      totalPage: Math.ceil(this.props.children.length / this.num_per_page)
+    }
     // 需要渲染的部分
     // (current_page - 1) * num_per_page,  current_page * num_per_page
   }
-  
+
+  componentDidUpdate(prevProps: Readonly<{ children: ResultType; }>,
+    prevState: Readonly<{ currentPage: number; totalPage: number; }>,
+    snapshot?: any): void {
+    if (prevProps.children !== this.props.children) {
+      this.setState({
+        currentPage: 1,
+        totalPage: Math.ceil(this.props.children.length / this.num_per_page)
+      })
+    }
+  }
+
   render(): React.ReactNode {
     return (
-      <Card raised>
-        <CardContent >
-          <List >
-            {
-              this.props.children.map((item, index) => <ListItem key={index}>
-                <ListItemButton onClick={() => console.info(item.character)}>
-                  <ListItemText
-                    primary={item.character}
-                    secondary={item.explain}
-                  ></ListItemText>
-                </ListItemButton>
-              </ListItem>)
-            }
-          </List>
-          {
-            // 大于一页才分页
-            this.page_count > 1 ? 
-            <Pagination count={this.page_count} color="secondary" onChange={(_e, page) => console.log(page)} /> : ''
-          }
-          
-        </CardContent>
-      </Card>
+      <Fragment>
+        <Card raised>
+          <CardContent >
+            <List >
+              {
+                this.props.children.slice((this.state.currentPage - 1) * this.num_per_page,
+                  Math.min(this.props.children.length, this.state.currentPage * this.num_per_page)
+                ).map((item, index) => <ListItem key={index}>
+                  <ListItemButton onClick={() => console.info(item.character)}>
+                    <ListItemText
+                      primary={item.character}
+                      secondary={item.explain}
+                    ></ListItemText>
+                  </ListItemButton>
+                </ListItem>)
+              }
+            </List>
+          </CardContent>
+        </Card>
+        {
+          // 大于一页才分页
+          this.state.totalPage > 1 ?
+            <Container style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center' }}>
+              <Pagination count={this.state.totalPage}
+                color="secondary" page={this.state.currentPage}
+                onChange={(_e, page) => this.setState({ currentPage: page })} />
+            </Container> : ''
+        }</Fragment>
     );
   }
 
