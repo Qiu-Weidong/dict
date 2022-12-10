@@ -1,11 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Stack } from "@mui/material";
 import Chip from "@mui/material/Chip";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import eventBus from "../eventbus";
 import { Fragment } from "react";
 // import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
 // import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Avatar } from "antd";
+import { Avatar } from "@mui/material";
+import NotFound from '../components/404';
 
 
 export interface DictItem {
@@ -206,4 +206,16 @@ function BlockDisplay(props: { children: Block }) {
   );
 }
 
+
+export function DictListDisplay(props: { children: DictItem[] }) {
+  if (props.children.length <= 0)
+    return <NotFound />;
+
+  else
+    return (
+      <Stack spacing={2}>
+        {props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
+      </Stack>
+    );
+}
 

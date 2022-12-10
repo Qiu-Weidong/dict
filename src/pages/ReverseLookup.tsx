@@ -5,13 +5,14 @@ import IconButton from '@mui/material/IconButton';
 import {
   Button, Container, Card,
   TextField, CardContent, List, ListItem, ListItemText, ListItemButton,
-  Pagination
+  Pagination,
+  Drawer
 } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React, { Fragment } from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
-import { DictItem, DictItemDisplay } from '../components/Mdict';
+import { DictItem, DictItemDisplay, DictListDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -122,9 +123,9 @@ export default class ReverseLookup extends React.Component<
     sql = sql.replace("or ", "");
     sql += ");";
 
-    sqlite.select<{character: string, explain: string}[]>(sql).then(datas => {
-      for(let data of datas) {
-        for(const query of query_set) {
+    sqlite.select<{ character: string, explain: string }[]>(sql).then(datas => {
+      for (let data of datas) {
+        for (const query of query_set) {
           data.explain = data.explain.replaceAll(query, `<span style="background: yellow;">${query}</span>`);
         }
       }
@@ -139,7 +140,7 @@ export default class ReverseLookup extends React.Component<
 
 class ResultDisplay extends React.Component<
   { children: ResultType },
-  { currentPage: number, totalPage: number }
+  { currentPage: number, totalPage: number, showDrawer: boolean, details: DictItem[] }
 > {
 
   num_per_page: number;
@@ -150,7 +151,9 @@ class ResultDisplay extends React.Component<
 
     this.state = {
       currentPage: 1,
-      totalPage: Math.ceil(this.props.children.length / this.num_per_page)
+      totalPage: Math.ceil(this.props.children.length / this.num_per_page),
+      showDrawer: false,
+      details: []
     }
   }
 
@@ -175,10 +178,30 @@ class ResultDisplay extends React.Component<
                 this.props.children.slice((this.state.currentPage - 1) * this.num_per_page,
                   Math.min(this.props.children.length, this.state.currentPage * this.num_per_page)
                 ).map((item, index) => <ListItem key={index}>
-                  <ListItemButton onClick={() => console.info(item.character)}>
+                  <ListItemButton onClick={() => {
+                    console.info(item.character)
+                    const query = item.character;
+                    const result: DictItem[] = [];
+                    const sim = Simplized(query);
+                    const tra = Traditionalized(query);
+
+                    sqlite.select<{ json: string, character: string }[]>("select json, character from Dictionary          \
+                    where character = '" + sim + "'     \
+                    or character = '" + tra + "'        \
+                    or character = '"+ query + "'  \
+                    ;").then(datas => {
+                      for (const data of datas) {
+                        const item: DictItem = { ...JSON.parse(data.json), character: data.character };
+                        // console.log(item);
+                        result.push(item);
+                      }
+                      this.setState({ details: result, showDrawer: true });
+                    });
+                    // this.setState({ showDrawer: true });
+                  }}>
                     <ListItemText
                       primary={item.character}
-                      secondary={<span dangerouslySetInnerHTML={{__html: item.explain}}></span>}
+                      secondary={<span dangerouslySetInnerHTML={{ __html: item.explain }}></span>}
                     ></ListItemText>
                   </ListItemButton>
                 </ListItem>)
@@ -194,7 +217,18 @@ class ResultDisplay extends React.Component<
                 color="secondary" page={this.state.currentPage}
                 onChange={(_e, page) => this.setState({ currentPage: page })} />
             </Container> : ''
-        }</Fragment>
+        }
+        <Drawer
+          anchor="left"
+          open={this.state.showDrawer}
+          onClose={() => this.setState({ showDrawer: false })}
+          color="transparent"
+          sx={{ bgColor: 'transparent' }}
+          
+        >
+          <DictListDisplay >{this.state.details}</DictListDisplay>
+        </Drawer>
+      </Fragment>
     );
   }
 

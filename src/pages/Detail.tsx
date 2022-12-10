@@ -8,8 +8,7 @@ import logo from '../assets/icon.svg';
 import React from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
-import { DictItem, DictItemDisplay } from '../components/Mdict';
-import NotFound from '../components/404';
+import { DictItem, DictItemDisplay, DictListDisplay } from '../components/Mdict';
 import eventBus from '../eventbus';
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -116,19 +115,6 @@ export default class Detail extends React.Component<
   componentWillUnmount(): void {
     eventBus.removeListener('search', this.call_back);
   }
-}
-
-
-function DictListDisplay(props: { children: DictItem[] }) {
-  if (props.children.length <= 0)
-    return <NotFound />;
-
-  else
-    return (
-      <Stack spacing={2}>
-        {props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
-      </Stack>
-    );
 }
 
 
