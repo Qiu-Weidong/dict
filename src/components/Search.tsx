@@ -8,7 +8,7 @@ import eventBus from "../eventbus";
 
 
 export class Search extends React.Component<
-  { onSearch: (param: string) => void, defaultValue?: string },
+  { onSearch: (param: string) => void },
   { value: string, options: { value: string }[] }
 > {
   private lock: boolean;
@@ -16,7 +16,7 @@ export class Search extends React.Component<
   constructor(props: Readonly<{ onSearch: (param: string) => void }>) {
     super(props);
     this.lock = false;
-    this.state = { value: this.props.defaultValue || '', options: [] };
+    this.state = { value:  '', options: [] };
   }
 
   render(): React.ReactNode {

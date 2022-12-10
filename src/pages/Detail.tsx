@@ -45,8 +45,10 @@ export default class Detail extends React.Component<
             {/* <IconButton >
               <MoreVertIcon />
             </IconButton> */}
-            <Button color='inherit'>首頁</Button>
-            <Button color='inherit'>設置</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/home')} >首頁</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/settings')}>設置</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/reverselookup')}>反查</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/help')}>帮助</Button>
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
@@ -105,7 +107,7 @@ export default class Detail extends React.Component<
   componentDidMount(): void {
     eventBus.addListener('search', this.call_back);
 
-    const query = this.props.match.params.query.trim() || '';
+    const query = (this.props.match.params.query || '').trim();
     this.search(query);
 
     // 如果不是直接在搜索框中点击search，那么需要发送一个消息来同步搜索框

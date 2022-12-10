@@ -57,7 +57,7 @@ export function DictItemDisplay(props: { children: DictItem }) {
   const show_prefix: boolean = props.children.prefix ? true : false;
   const show_related: boolean = props.children.related ? true : false;
   return (
-    <Card raised >
+    <Fragment >
 
       {
         /* 首先展示 character, 如果没有 block的话 */
@@ -104,7 +104,7 @@ export function DictItemDisplay(props: { children: DictItem }) {
           size="small" color="success" variant="outlined" onClick={() => jump(props.children.link as string, props.children.character)}
           label={props.children.link} />`</CardContent> : ''
       }
-    </Card>
+    </Fragment>
   );
 }
 
@@ -130,7 +130,7 @@ function ContentDisplay(props: { children: Content }) {
               {
                 props.children.subcontent?.map((item, index) =>
                   <ListItem key={index}>
-                    <div style={{ 'minWidth': '20%' }}><b>{ item.type ? <b>[{item.type}]</b> : '' } {item.explain}</b></div>
+                    <div style={{ 'minWidth': '20%' }}><b>{item.type ? <b>[{item.type}]</b> : ''} {item.explain}</b></div>
                     <List>
                       {item.examples?.map(exam => <ListItem>{exam}</ListItem>)}
                     </List>
@@ -214,7 +214,9 @@ export function DictListDisplay(props: { children: DictItem[] }) {
   else
     return (
       <Stack spacing={2}>
-        {props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
+        <Card raised>
+          {props.children.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
+        </Card>
       </Stack>
     );
 }

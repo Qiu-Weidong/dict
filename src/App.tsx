@@ -14,6 +14,7 @@ function App() {
       <Switch >
         <Redirect from="/" to='/home' exact  />
         <Route path="/detail/:query" component={Detail} />
+        <Route path="/detail" exact component={Detail} />
         <Route path="/home" component={Home} />
         <Route path="/reverselookup" component={ReverseLookup} />
         

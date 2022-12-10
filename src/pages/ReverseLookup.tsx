@@ -6,13 +6,14 @@ import {
   Button, Container, Card,
   TextField, CardContent, List, ListItem, ListItemText, ListItemButton,
   Pagination,
-  Drawer
+  Drawer,
+  Stack
 } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React, { Fragment } from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
-import { DictItem, DictItemDisplay, DictListDisplay } from '../components/Mdict';
+import { DictItem, DictItemDisplay } from '../components/Mdict';
 import NotFound from '../components/404';
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -74,9 +75,10 @@ export default class ReverseLookup extends React.Component<
             </TextField>
 
             {/* <Box sx={{ flexGrow: 1 }} /> */}
-            <Button color='inherit'>首頁</Button>
-            <Button color='inherit'>設置</Button>
-            <Button color='inherit'>正查</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/home')}>首頁</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/settings')}>設置</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/detail')}>正查</Button>
+            <Button color='inherit' onClick={() => this.props.history.push('/help')}>帮助</Button>
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
@@ -105,8 +107,6 @@ export default class ReverseLookup extends React.Component<
       query_set.add(sim);
       query_set.add(query);
     }
-
-    // console.log(query_set);
 
     let sql = " select \
                   Dictionary.character, Explain.explain \
@@ -168,6 +168,28 @@ class ResultDisplay extends React.Component<
     }
   }
 
+  showDetails(query: string) {
+    const result: DictItem[] = [];
+    const sim = Simplized(query);
+    const tra = Traditionalized(query);
+
+    sqlite.select<{ json: string, character: string }[]>("select json, character from Dictionary          \
+                    where character = '" + sim + "'     \
+                    or character = '" + tra + "'        \
+                    or character = '"+ query + "'  \
+                    ;").then(datas => {
+      if(datas.length <= 0) {
+        
+        return;
+      }
+      for (const data of datas) {
+        const item: DictItem = { ...JSON.parse(data.json), character: data.character };
+        result.push(item);
+      }
+      this.setState({ details: result, showDrawer: true });
+    });
+  }
+
   render(): React.ReactNode {
     return (
       <Fragment>
@@ -178,27 +200,7 @@ class ResultDisplay extends React.Component<
                 this.props.children.slice((this.state.currentPage - 1) * this.num_per_page,
                   Math.min(this.props.children.length, this.state.currentPage * this.num_per_page)
                 ).map((item, index) => <ListItem key={index}>
-                  <ListItemButton onClick={() => {
-                    console.info(item.character)
-                    const query = item.character;
-                    const result: DictItem[] = [];
-                    const sim = Simplized(query);
-                    const tra = Traditionalized(query);
-
-                    sqlite.select<{ json: string, character: string }[]>("select json, character from Dictionary          \
-                    where character = '" + sim + "'     \
-                    or character = '" + tra + "'        \
-                    or character = '"+ query + "'  \
-                    ;").then(datas => {
-                      for (const data of datas) {
-                        const item: DictItem = { ...JSON.parse(data.json), character: data.character };
-                        // console.log(item);
-                        result.push(item);
-                      }
-                      this.setState({ details: result, showDrawer: true });
-                    });
-                    // this.setState({ showDrawer: true });
-                  }}>
+                  <ListItemButton onClick={() => this.showDetails(item.character)}>
                     <ListItemText
                       primary={item.character}
                       secondary={<span dangerouslySetInnerHTML={{ __html: item.explain }}></span>}
@@ -222,11 +224,19 @@ class ResultDisplay extends React.Component<
           anchor="left"
           open={this.state.showDrawer}
           onClose={() => this.setState({ showDrawer: false })}
-          color="transparent"
-          sx={{ bgColor: 'transparent' }}
-          
+          sx={{
+            width: '500px',
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: '500px',
+              boxSizing: 'border-box',
+            },
+          }}
         >
-          <DictListDisplay >{this.state.details}</DictListDisplay>
+
+          <Stack spacing={2}>
+            {this.state.details.map((item, index) => <DictItemDisplay key={index} >{item}</DictItemDisplay>)}
+          </Stack>
         </Drawer>
       </Fragment>
     );
