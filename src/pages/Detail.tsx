@@ -56,14 +56,12 @@ export default class Detail extends React.Component<
             color="info"
             size='small'
             onClick={() => {
-              console.info(this.queries);
-              if(this.queries.length <= 1) { console.log(this.queries); return; }
+              if(this.queries.length <= 1) { return; }
               const current = this.queries.pop() || '';
               const last = this.queries.pop() || '';
               if(! last) return;
               this.search(last);
               eventBus.emit('search', last);
-              console.info(this.queries);
             } }
           >
             <ArrowBackIcon />
@@ -88,7 +86,6 @@ export default class Detail extends React.Component<
                     ;").then(datas => {
       for (const data of datas) {
         const item: DictItem = { ...JSON.parse(data.json), character: data.character };
-        // console.log(item);
         result.push(item);
       }
       this.setState({ datas: result });

@@ -43,7 +43,6 @@ export class Home extends React.Component<{history?: any}> {
 export default Home;
 
 // function search(value: string) {
-//     console.log('输入内容', value);
 //     // todo 增加跳轉
 //     navgate('/detail', {
 //       state: { query: value }

@@ -20,7 +20,7 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [],
+      "externalBin": ["./古代汉语词典.db"],
       "icon": [
         "icons/oracle.png",
         "icons/oracle.ico"
@@ -40,7 +40,10 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix":{
+          "language": ["zh-CN", "zh-TW"]
+        }
       }
     },
     "security": {
@@ -59,5 +62,6 @@
         "transparent": true
       }
     ]
+    
   }
 }
