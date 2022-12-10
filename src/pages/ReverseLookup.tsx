@@ -5,10 +5,10 @@ import IconButton from '@mui/material/IconButton';
 import {
   Button, Container, Card,
   TextField, CardContent, List, ListItem, ListItemText, ListItemButton,
-  Pagination, Stack
+  Pagination
 } from '@mui/material';
 import logo from '../assets/icon.svg';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
 import { DictItem, DictItemDisplay } from '../components/Mdict';
@@ -28,7 +28,13 @@ export default class ReverseLookup extends React.Component<
   constructor(props: any) {
     super(props);
     this.input = '';
-    this.state = { datas: [] }
+    this.state = {
+      datas: [
+        {
+          character: '说明',
+          explain: '输入框中输入要查询的文本，用 | 隔开'
+        }]
+    }
   }
 
   render(): React.ReactNode {
@@ -66,14 +72,19 @@ export default class ReverseLookup extends React.Component<
             >
             </TextField>
 
-            <Box sx={{ flexGrow: 1 }} />
+            {/* <Box sx={{ flexGrow: 1 }} /> */}
             <Button color='inherit'>首頁</Button>
             <Button color='inherit'>設置</Button>
+            <Button color='inherit'>正查</Button>
           </Toolbar>
         </AppBar>
         {/* <Toolbar></Toolbar> */}
         <Container sx={{ m: 'auto', maxWidth: '650px', padding: '30px 5px' }}>
-          <ResultDisplay >{this.state.datas}</ResultDisplay>
+          {
+            this.state.datas.length > 0 ? <ResultDisplay >{this.state.datas}</ResultDisplay>
+              : <NotFound ></NotFound>
+          }
+
         </Container>
 
       </Box>
@@ -81,16 +92,43 @@ export default class ReverseLookup extends React.Component<
   }
 
   search(): void {
-    console.log(this.input);
     this.input = this.input.trim();
+    let queries = this.input.split('|');
+    const query_set = new Set<string>();
 
-    sqlite.select<ResultType>("select Dictionary.character, Explain.explain\
-                    from\
-                    Dictionary, Explain\
-                    where Dictionary.id = Explain.dictionary_id and\
-                    Explain.explain like '%" + this.input + "%'").then(data => {
-      console.log(data);
-      this.setState({ datas: data });
+    for (const q of queries) {
+      const query = q.trim();
+      const tra = Traditionalized(query);
+      const sim = Simplized(query);
+      query_set.add(tra);
+      query_set.add(sim);
+      query_set.add(query);
+    }
+
+    // console.log(query_set);
+
+    let sql = " select \
+                  Dictionary.character, Explain.explain \
+                from \
+                  Dictionary, Explain \
+                where \
+                  Dictionary.id = Explain.dictionary_id and (\
+                ";
+
+    for (const query of query_set) {
+      sql += (" or Explain.explain like '%" + query + "%'");
+    }
+
+    sql = sql.replace("or ", "");
+    sql += ");";
+
+    sqlite.select<{character: string, explain: string}[]>(sql).then(datas => {
+      for(let data of datas) {
+        for(const query of query_set) {
+          data.explain = data.explain.replaceAll(query, `<span style="background: yellow;">${query}</span>`);
+        }
+      }
+      this.setState({ datas });
     });
 
   }
@@ -114,8 +152,6 @@ class ResultDisplay extends React.Component<
       currentPage: 1,
       totalPage: Math.ceil(this.props.children.length / this.num_per_page)
     }
-    // 需要渲染的部分
-    // (current_page - 1) * num_per_page,  current_page * num_per_page
   }
 
   componentDidUpdate(prevProps: Readonly<{ children: ResultType; }>,
@@ -142,7 +178,7 @@ class ResultDisplay extends React.Component<
                   <ListItemButton onClick={() => console.info(item.character)}>
                     <ListItemText
                       primary={item.character}
-                      secondary={item.explain}
+                      secondary={<span dangerouslySetInnerHTML={{__html: item.explain}}></span>}
                     ></ListItemText>
                   </ListItemButton>
                 </ListItem>)
@@ -153,7 +189,7 @@ class ResultDisplay extends React.Component<
         {
           // 大于一页才分页
           this.state.totalPage > 1 ?
-            <Container style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center' }}>
+            <Container style={{ 'display': 'flex', 'alignItems': 'center', 'justifyContent': 'center', 'paddingTop': '8px' }}>
               <Pagination count={this.state.totalPage}
                 color="secondary" page={this.state.currentPage}
                 onChange={(_e, page) => this.setState({ currentPage: page })} />
