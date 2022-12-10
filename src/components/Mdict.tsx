@@ -2,8 +2,6 @@ import { Card, CardContent, CardHeader, Divider, List, ListItem, ListItemAvatar,
 import Chip from "@mui/material/Chip";
 import eventBus from "../eventbus";
 import { Fragment } from "react";
-// import FiberManualRecordRoundedIcon from '@mui/icons-material/FiberManualRecordRounded';
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Avatar } from "@mui/material";
 import NotFound from '../components/404';
 
@@ -47,7 +45,6 @@ interface SubContent {
 function jump(word: string, character: string) {
   const re = /～+/g;
   const new_word = word.replaceAll(re, character);
-  // console.log(new_word);
   eventBus.emit('search', new_word);
 }
 

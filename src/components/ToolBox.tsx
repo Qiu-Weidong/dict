@@ -1,7 +1,6 @@
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
 import { IconButton, Grow } from "@mui/material";
-// import Fade from '@mui/material/Fade';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
@@ -11,8 +10,7 @@ import './ToolBox.css';
 import { useState } from "react";
 
 function ToolBox(props: any) {
-  // const navgate = useNavigate();
-  
+
   const content = (
     <div className='tools'>
       <IconButton color="info" aria-label="home" size="small" onClick={() => props.history.push("/home") }>
@@ -39,7 +37,6 @@ function ToolBox(props: any) {
         {!show ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </IconButton>
       <Grow in={show}>{content}</Grow>
-      {/* <Fade in={show}>{content}</Fade> */}
     </div>
   );
 }

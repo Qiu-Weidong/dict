@@ -3,14 +3,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Search from '../components/Search';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import logo from '../assets/icon.svg';
 import React from 'react';
 import sqlite from '../sqlite';
 import { Traditionalized, Simplized } from '../translate';
-import { DictItem, DictItemDisplay, DictListDisplay } from '../components/Mdict';
+import { DictItem, DictListDisplay } from '../components/Mdict';
 import eventBus from '../eventbus';
-// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
@@ -42,9 +41,6 @@ export default class Detail extends React.Component<
             </IconButton>
             <Search onSearch={(param) => this.search(param)} />
             <Box sx={{ flexGrow: 1 }} />
-            {/* <IconButton >
-              <MoreVertIcon />
-            </IconButton> */}
             <Button color='inherit' onClick={() => this.props.history.push('/home')} >首頁</Button>
             <Button color='inherit' onClick={() => this.props.history.push('/settings')}>設置</Button>
             <Button color='inherit' onClick={() => this.props.history.push('/reverselookup')}>反查</Button>

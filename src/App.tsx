@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import ToolBox from "./components/ToolBox";
 import NotFoundPage from "./pages/404";
 import ReverseLookup from "./pages/ReverseLookup";
+import Background from "./components/Background";
 
 function App() {
-  const bg_url = 'https://cdn.jsdelivr.net/gh/Qiu-Weidong/blog/resources/images/%E5%A3%81%E7%BA%B8/brige.jpg';
-
   return (
     <Router>
-      <img src={bg_url} alt="" className="background-img" />
+      {/* <img src={bg_url} alt="" className="background-img" /> */}
+      <Background />
       <Switch >
         <Redirect from="/" to='/home' exact  />
         <Route path="/detail/:query" component={Detail} />

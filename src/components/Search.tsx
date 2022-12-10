@@ -1,4 +1,4 @@
-import { IconButton, TextField, Button } from "@mui/material";
+import { IconButton, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import { AutoComplete } from "antd";
 import { Traditionalized, Simplized } from '../translate';
@@ -74,7 +74,6 @@ export class Search extends React.Component<
     }
   }
 
-  // call_back = this.handleSearchEvent.bind(this);
   call_back = (param: string) => {
     if (param.trim() !== this.state.value) {
       this.setState({ value: param.trim() });
@@ -87,7 +86,6 @@ export class Search extends React.Component<
 
   componentWillUnmount(): void {
     eventBus.removeListener('search', this.call_back);
-    // console.log('unmount后', eventBus);
   }
 }
 
