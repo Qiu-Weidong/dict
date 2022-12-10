@@ -1,6 +1,6 @@
 import SQLite from 'tauri-plugin-sqlite-api';
 
-const sqlite = await SQLite.open('./古代汉语词典.db');
+const sqlite = await SQLite.open('./dict.db');
 
 
 export default sqlite;

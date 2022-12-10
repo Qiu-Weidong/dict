@@ -20,7 +20,7 @@
       "deb": {
         "depends": []
       },
-      "externalBin": ["./古代汉语词典.db"],
+      "externalBin": [],
       "icon": [
         "icons/oracle.png",
         "icons/oracle.ico"
@@ -34,7 +34,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["./dict.db"],
       "shortDescription": "",
       "targets": "all",
       "windows": {
